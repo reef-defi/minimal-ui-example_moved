@@ -1,12 +1,13 @@
 import polyfill from './polyfill';
 import {flipIt, getFlipperValue} from "./flipperContract";
-import {getSigner} from "./util";
+import {getSigner} from "./signerUtil";
 
 polyfill;
 
-(window as any).onReefInjectedPromise = ()=>new Promise(resolve => {
-    setTimeout(() => resolve(), 1000);
-});
+// TODO move to lib
+// (window as any).onReefInjectedPromise = ()=>new Promise(resolve => {
+//remove timeout     setTimeout(() => resolve(), 1000);
+// });
 
 (window as any).flipperApi = {
     getSigner,
