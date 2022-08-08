@@ -2,7 +2,7 @@
   "compilerOptions": {
     "paths": {
       "crypto": [
-        "../../node_modules/crypto-browserify"
+        "./node_modules/crypto-browserify"
       ]
     },
     "lib": [
