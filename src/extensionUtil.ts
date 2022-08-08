@@ -1,9 +1,14 @@
 import {web3Enable} from "@reef-defi/extension-dapp";
 
+// TODO move to lib
+(window as any).onReefInjectedPromise = ()=>new Promise(resolve => {
+    // remove timeout
+    setTimeout(() => resolve(), 1000);
+});
+
 export async function initExtension() {
-    const ext = await web3Enable('Test REEF DApp', [(window as any).onReefInjectedPromise || (() => {
-        return Promise.resolve(true);
-    })]);
+    const compatInits = (window as any).onReefInjectedPromise?[(window as any).onReefInjectedPromise]:[];
+    const ext = await web3Enable('Test REEF DApp', compatInits);
     if (!ext.length) {
         alert('Install Reef Chain Wallet extension for Chrome or Firefox. See docs.reef.io')
         return;

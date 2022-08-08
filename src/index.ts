@@ -4,11 +4,6 @@ import {getSigner} from "./signerUtil";
 
 polyfill;
 
-// TODO move to lib
-// (window as any).onReefInjectedPromise = ()=>new Promise(resolve => {
-//remove timeout     setTimeout(() => resolve(), 1000);
-// });
-
 (window as any).flipperApi = {
     getSigner,
     flipIt: async (signer)=>{
