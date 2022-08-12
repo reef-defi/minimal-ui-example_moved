@@ -2,12 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Minml example dApp</title>
+    <title>Minml dApp example</title>
     <script src="js/index.js"></script>
     <script>
         async function init(){
-            window.reefSigner = await flipperApi.getSigner();
-            document.body.classList.add("reef-chain-ready");
+            try {
+                window.reefSigner = await flipperApi.getSigner();
+                document.body.classList.add("connected");
+                console.log("connn=");
+            }catch (e){
+                console.log("ERRR=",e.message);
+                document.body.classList.add("reef-extension-error");
+                document.getElementsByClassName('error-msg')[0].innerHTML = e.message;
+            }
+            document.body.classList.add("extension-initialized");
         };
         init();
     </script>
@@ -15,10 +23,19 @@
         .connected{
             display: none;
         }
-        .reef-chain-ready .connected{
+        .extension-initialized.connected .buttons{
             display: block;
         }
-        .reef-chain-ready .connecting{
+        .extension-initialized .connecting{
+            display: none;
+        }
+        .error-display{
+            display: none;
+        }
+        .reef-extension-error .error-display{
+            display: block;
+        }
+        .reef-extension-error .buttons{
             display: none;
         }
     </style>
@@ -28,9 +45,12 @@
 <div class="connecting">
     <p>Connecting to chain, please wait ...</p>
 </div>
-<div class="connected">
+<div class="buttons">
     <button type="button" onclick="flipperApi.getFlipperValue(reefSigner)">log value</button>
     <button type="button" onclick="flipperApi.flipIt(reefSigner)">flip it</button>
+</div>
+<div class="error-display">
+    <h3>ERROR: <span class="error-msg"></span></h3>
 </div>
 </body>
 </html>
