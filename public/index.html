@@ -5,25 +5,42 @@
     <title>Minml dApp example</title>
     <script src="js/index.js"></script>
     <script>
+
+        function displayError(e) {
+            console.log("ERRR=", e.message);
+            document.body.classList.add("reef-extension-error");
+            document.getElementsByClassName('error-msg')[0].innerHTML = e.message;
+        }
+
+        async function bindEvm() {
+            try {
+                document.body.classList.add("claiming-evm");
+                await window.reefSigner.claimDefaultAccount();
+                document.body.classList.add("evm-claimed");
+            }catch (e) {
+                displayError(e);
+            }
+        }
+
         async function init(){
             try {
                 window.reefSigner = await flipperApi.getSigner();
                 document.body.classList.add("connected");
-                console.log("connn=");
+                if(await window.reefSigner.isClaimed()){
+                    document.body.classList.add("evm-claimed");
+                }
             }catch (e){
-                console.log("ERRR=",e.message);
-                document.body.classList.add("reef-extension-error");
-                document.getElementsByClassName('error-msg')[0].innerHTML = e.message;
+                displayError(e);
             }
             document.body.classList.add("extension-initialized");
         };
         init();
     </script>
     <style>
-        .connected{
+        .content{
             display: none;
         }
-        .extension-initialized.connected .buttons{
+        .extension-initialized.connected .content{
             display: block;
         }
         .extension-initialized .connecting{
@@ -35,7 +52,28 @@
         .reef-extension-error .error-display{
             display: block;
         }
-        .reef-extension-error .buttons{
+        .content{
+            display: none;
+        }
+        code{
+            background-color: #ECEFF1;
+        }
+        .evm-contract-calls {
+            display: none;
+        }
+        .evm-claimed .evm-contract-calls {
+            display: block;
+        }
+        .evm-claimed .bind-evm {
+            display: none;
+        }
+        .binding-evm {
+            display: none;
+        }
+        .claiming-evm .binding-evm  {
+            display: block;
+        }
+        .claiming-evm .bind-start {
             display: none;
         }
     </style>
@@ -45,12 +83,23 @@
 <div class="connecting">
     <p>Connecting to chain, please wait ...</p>
 </div>
-<div class="buttons">
-    <button type="button" onclick="flipperApi.getFlipperValue(reefSigner)">log value</button>
-    <button type="button" onclick="flipperApi.flipIt(reefSigner)">flip it</button>
+<div class="content">
+    <div class="bind-evm">
+        <div class="bind-start">
+            <p>Click below to start calling EVM contracts</p>
+            <button type="button" onclick="bindEvm()">Enable contract interaction</button>
+        </div>
+        <div class="binding-evm">
+            <p>Transaction in progress ...</p>
+        </div>
+    </div>
+    <div class="evm-contract-calls">
+        <button type="button" onclick="flipperApi.getFlipperValue(reefSigner)">log contract value</button>
+        <button type="button" onclick="flipperApi.flipIt(reefSigner)">toggle contract value</button>
+    </div>
 </div>
 <div class="error-display">
-    <h3>ERROR: <span class="error-msg"></span></h3>
+    <h3>ERROR</h3> <div class="error-msg"></div>
 </div>
 </body>
 </html>
