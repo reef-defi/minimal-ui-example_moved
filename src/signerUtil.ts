@@ -10,7 +10,9 @@ export const getSigner = async () => {
 
     const signer:EvmSigner = await initSigner(testAccount.address, extension.signer);
 
-    const balanceBigNumber = await signer.getBalance();
+    let address = await signer.getAddress();
+    console.log("Signer address=",address);
+    const balanceBigNumber = await signer.provider.getBalance(address);
 
     const balance = balanceBigNumber.div(getReefDecimals());
     console.log("Signer balance=",balance.toString());

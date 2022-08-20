@@ -24,12 +24,14 @@
 
         async function init(){
             try {
+                console.log("min dApp init");
                 window.reefSigner = await flipperApi.getSigner();
                 document.body.classList.add("connected");
                 if(await window.reefSigner.isClaimed()){
                     document.body.classList.add("evm-claimed");
                 }
             }catch (e){
+                console.log("Error=",e);
                 displayError(e);
             }
             document.body.classList.add("extension-initialized");
