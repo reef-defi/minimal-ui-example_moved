@@ -3,80 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <title>Minml dApp example</title>
-    <script src="js/index.js"></script>
     <script>
-
+        var appState = {
+            signer: undefined
+        }
         function displayError(e) {
-            console.log("ERRR=", e.message);
             document.body.classList.add("reef-extension-error");
             document.getElementsByClassName('error-msg')[0].innerHTML = e.message;
         }
+
+        document.addEventListener('min-dapp_init', () => document.body.classList.add("connected"));
+        document.addEventListener('min-dapp_evm-connected', () => document.body.classList.add("evm-connected"));
+        document.addEventListener('min-dapp_error', (ev) => displayError(ev.detail));
+        document.addEventListener('min-dapp_app-state', (ev) => {
+            document.body.classList.add("extension-initialized");
+            console.log('aaaa', ev.detail)
+            appState.signer = ev.detail;
+        });
+    </script>
+    <script src="js/index.js"></script>
+
+    <script>
 
         async function bindEvm() {
             try {
                 document.body.classList.add("claiming-evm");
                 await window.reefSigner.claimDefaultAccount();
-                document.body.classList.add("evm-claimed");
+                document.body.classList.add("evm-connected");
             }catch (e) {
                 displayError(e);
             }
         }
 
-        async function init(){
-            try {
-                console.log("min dApp init");
-                window.reefSigner = await flipperApi.getSigner();
-                await flipperApi.initState();
-                const tkns  = await flipperApi.getTokens();
-                document.body.classList.add("connected");
-                if(await window.reefSigner.isClaimed()){
-                    document.body.classList.add("evm-claimed");
-                }
-            }catch (e){
-                console.log("Error=",e);
-                displayError(e);
-            }
-            document.body.classList.add("extension-initialized");
-        };
-        window.addEventListener('load',init);
     </script>
     <style>
-        .content{
+        .content {
             display: none;
         }
-        .extension-initialized.connected .content{
+
+        .extension-initialized.connected .content {
             display: block;
         }
-        .extension-initialized .connecting{
+
+        .extension-initialized .connecting {
             display: none;
         }
-        .error-display{
+
+        .error-display {
             display: none;
         }
-        .reef-extension-error .error-display{
+
+        .reef-extension-error .error-display {
             display: block;
         }
-        .content{
+
+        .content {
             display: none;
         }
-        code{
+
+        code {
             background-color: #ECEFF1;
         }
+
         .evm-contract-calls {
             display: none;
         }
-        .evm-claimed .evm-contract-calls {
+
+        .evm-connected .evm-contract-calls {
             display: block;
         }
-        .evm-claimed .bind-evm {
+
+        .evm-connected .bind-evm {
             display: none;
         }
+
         .binding-evm {
             display: none;
         }
-        .claiming-evm .binding-evm  {
+
+        .claiming-evm .binding-evm {
             display: block;
         }
+
         .claiming-evm .bind-start {
             display: none;
         }
@@ -103,7 +111,8 @@
     </div>
 </div>
 <div class="error-display">
-    <h3>ERROR</h3> <div class="error-msg"></div>
+    <h3>ERROR</h3>
+    <div class="error-msg"></div>
 </div>
 </body>
 </html>
