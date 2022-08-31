@@ -2,6 +2,8 @@ import {Signer as EvmSigner} from "@reef-defi/evm-provider/Signer";
 import {initExtension} from "./extensionUtil";
 import {BigNumber} from "ethers";
 import {initProvider} from "./providerUtil";
+import {ReefSigner} from "@reef-chain/util-lib/lib/account/ReefAccount";
+import {reefState, availableNetworks} from "@reef-chain/util-lib";
 
 export const getSigner = async () => {
     let {extension, testAccount} = await initExtension();

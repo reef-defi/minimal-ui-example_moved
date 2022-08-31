@@ -1,6 +1,7 @@
 import polyfill from './polyfill';
 import {flipIt, getFlipperValue} from "./flipperContract";
 import {getSigner} from "./signerUtil";
+import {availableNetworks, reefState, selectedSigner$} from "@reef-chain/util-lib";
 
 polyfill;
 
@@ -17,5 +18,13 @@ polyfill;
         let val = await getFlipperValue(signer);
         console.log('Flipper value = ', val);
         return val;
+    },
+    initState: async ( ) =>{
+        reefState.initReefState(availableNetworks.mainnet );
+    },
+    getTokens: async  () => {
+        console.log("ggg=",selectedSigner$);
+        // return firstValueFrom(selectedSignerTokenBalances$);
+        selectedSigner$.subscribe((val) => console.log('SSSS', val));
     }
 };
