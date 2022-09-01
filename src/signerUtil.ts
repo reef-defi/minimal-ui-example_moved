@@ -1,12 +1,17 @@
 import {Signer as EvmSigner} from "@reef-defi/evm-provider/Signer";
-import {initExtension} from "./extensionUtil";
 import {BigNumber} from "ethers";
 import {initProvider} from "./providerUtil";
 import {ReefSigner} from "@reef-chain/util-lib/lib/account/ReefAccount";
 import {reefState, availableNetworks} from "@reef-chain/util-lib";
+import {InjectedExtension} from "@reef-defi/extension-inject/types";
+import type { Signer as SignerInterface, SignerResult } from '@polkadot/api/types';
+import {wrapBytes} from "@reef-defi/extension-dapp";
 
-export const getSigner = async () => {
-    let {extension, testAccount} = await initExtension();
+export const getExtension = async () => {
+
+}
+
+export const getSigner = async (extension: InjectedExtension, testAccount) => {
     // const  signature = await extension.signer.signRaw({data: JSON.stringify({value:'hello'}), type:'bytes', address:testAccount.address});
     // console.log("DAPP SIGN RESULT =", signature);
 
@@ -14,7 +19,7 @@ export const getSigner = async () => {
 
     let address = await signer.getAddress();
     console.log("Signer address=",address);
-    const balanceBigNumber = await signer.provider.getBalance(address);
+    const balanceBigNumber = await signer.getBalance();
 
     const balance = balanceBigNumber.div(getReefDecimals());
     console.log("Signer balance=",balance.toString());
@@ -30,7 +35,7 @@ export const getSigner = async () => {
         // await signer.claimDefaultAccount();
     }
     // console.log("account evm address=", await signer.queryEvmAddress());
-    return signer;
+    return {signer, balance: balance, evmConnected: hasEvmAddress};
 }
 
 export async function initSigner(address: String, extensionSigner) {
@@ -39,4 +44,34 @@ export async function initSigner(address: String, extensionSigner) {
 
 function getReefDecimals() {
     return BigNumber.from('10').pow('18');
+}
+
+function getMnemonicSigner_serverSideOnly(mnemonic: string): EvmSigner{
+    const sigKey = new MnemonicSigner(mnemonic);
+    return  new EvmSigner(await initProvider(), address, sigKey);
+}
+
+class MnemonicSigner implements SignerInterface {
+    mnemonic: string;
+
+    constructor(mnemonic: string){
+     this.mnemonic = mnemonic;
+    }
+
+    async signPayload(payload: SignerPayloadJSON): Promise<SignerResult>{
+        const registry = new TypeRegistry();
+        registry.setSignedExtensions(payload.signedExtensions);
+
+        const pair: KeyringPair = await Keyring.keyPairFromMnemonic(this.mnemonic);
+
+        return registry
+            .createType('ExtrinsicPayload', payload, { version: payload.version })
+            .sign(pair);
+    }
+
+    async signRaw(payload: SignerPayloadRaw): Promise<SignerResult>{
+        const pair: KeyringPair = await Keyring.keyPairFromMnemonic(this.mnemonic);
+
+        return {id: 0, signature: u8aToHex(pair.sign(wrapBytes(message)))};
+    }
 }

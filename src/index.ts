@@ -2,10 +2,12 @@ import polyfill from './polyfill';
 import {flipIt, getFlipperValue} from "./flipperContract";
 import {getSigner} from "./signerUtil";
 import {availableNetworks, reefState, selectedSigner$} from "@reef-chain/util-lib";
+import {web3Enable} from "@reef-defi/extension-dapp";
+import {initReefExtension} from "./extensionUtil";
 
 polyfill;
 
-(window as any).flipperApi = {
+/*(window as any).flipperApi = {
     getSigner,
     flipIt: async (signer) => {
         console.log("FLIPPING NOW");
@@ -28,26 +30,48 @@ polyfill;
         // return firstValueFrom(selectedSignerTokenBalances$);
         selectedSigner$.subscribe((val) => console.log('SSSS', val));
     }
-};
+};*/
 
 (async function init() {
     try {
         console.log("min dApp init");
-        const reefSigner = await getSigner();
-        // await initState();
-        // document.body.classList.add("connected");
-        document.dispatchEvent(new CustomEvent('min-dapp_app-state', {detail:reefSigner}));
-        document.dispatchEvent(new Event('min-dapp_init'));
-        if (await reefSigner.isClaimed()) {
-            // document.body.classList.add("evm-connected");
-            document.dispatchEvent(new Event('min-dapp_evm-connected'))
-        }
+        const extension = await initReefExtension('Minimal DApp Example');
+        extension.accounts.subscribe(async (accounts) => {
+            if (!accounts.length) {
+                throw new Error('Create or import account in extension.');
+            }
+            console.log("acounts=", accounts);
+            // const selectedSigner = await getSigner(extension, accounts[0]);
+            document.dispatchEvent(new CustomEvent('min-dapp_app-state', {
+                detail: {
+                    state: {
+                        extension,
+                        accounts
+                    },
+                    api: {
+                        getSigner,
+                        getFlipperValue: async (signer) => {
+                            let val = await getFlipperValue(signer);
+                            console.log('Flipper value = ', val);
+                            return val;
+                        },
+                        flipIt: async (signer) => {
+                            console.log("FLIPPING NOW");
+                            await flipIt(signer);
+                            const val = await getFlipperValue(signer);
+                            console.log('New value = ', val);
+                            return val;
+                        }
+                    }
+                }
+            }));
+        });
     } catch (e) {
         console.log("Error=", e);
-        document.dispatchEvent(new CustomEvent('min-dapp_error', {detail:e}))
+        document.dispatchEvent(new CustomEvent('min-dapp_error', {detail: e}))
     }
     // document.body.classList.add("extension-initialized");
-    document.dispatchEvent(new Event('min-dapp_initialized'))
+    // document.dispatchEvent(new Event('min-dapp_initialized'))
 }());
 
 /*
@@ -56,7 +80,7 @@ function displayError(e) {
     document.getElementsByClassName('error-msg')[0].innerHTML = e.message;
 }*/
 
-async function bindEvm() {
+/*async function bindEvm() {
     try {
         document.body.classList.add("claiming-evm");
         await window.reefSigner.claimDefaultAccount();
@@ -64,4 +88,4 @@ async function bindEvm() {
     } catch (e) {
         displayError(e);
     }
-}
+}*/

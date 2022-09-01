@@ -5,20 +5,24 @@
     <title>Minml dApp example</title>
     <script>
         var appState = {
-            signer: undefined
+            selectedSigner: undefined,
         }
         function displayError(e) {
             document.body.classList.add("reef-extension-error");
             document.getElementsByClassName('error-msg')[0].innerHTML = e.message;
         }
 
-        document.addEventListener('min-dapp_init', () => document.body.classList.add("connected"));
+        document.addEventListener('min-dapp_initialized', () => document.body.classList.add("connected"));
         document.addEventListener('min-dapp_evm-connected', () => document.body.classList.add("evm-connected"));
         document.addEventListener('min-dapp_error', (ev) => displayError(ev.detail));
-        document.addEventListener('min-dapp_app-state', (ev) => {
+        document.addEventListener('min-dapp_app-state', async (ev) => {
+            appState = ev.detail;
+            appState.selectedSigner = await ev.detail.api.getSigner(ev.detail.state.extension, ev.detail.state.accounts[0]);
+            if (await appState.selectedSigner.signer.isClaimed()) {
+                document.dispatchEvent(new Event('min-dapp_evm-connected'))
+            }
             document.body.classList.add("extension-initialized");
-            console.log('aaaa', ev.detail)
-            appState.signer = ev.detail;
+            document.dispatchEvent(new Event('min-dapp_initialized'))
         });
     </script>
     <script src="js/index.js"></script>
@@ -28,7 +32,7 @@
         async function bindEvm() {
             try {
                 document.body.classList.add("claiming-evm");
-                await window.reefSigner.claimDefaultAccount();
+                await appState.selectedSigner.claimDefaultAccount();
                 document.body.classList.add("evm-connected");
             }catch (e) {
                 displayError(e);
@@ -106,8 +110,8 @@
         </div>
     </div>
     <div class="evm-contract-calls">
-        <button type="button" onclick="flipperApi.getFlipperValue(reefSigner)">log contract value</button>
-        <button type="button" onclick="flipperApi.flipIt(reefSigner)">toggle contract value</button>
+        <button type="button" onclick="appState.api.getFlipperValue(appState.selectedSigner)">log contract value</button>
+        <button type="button" onclick="appState.api.flipIt(appState.selectedSigner)">toggle contract value</button>
     </div>
 </div>
 <div class="error-display">
