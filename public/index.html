@@ -16,15 +16,7 @@
                         return;
                     }
                     console.log("acounts=", accounts);
-                    // const selectedSigner = await getSigner(extension, accounts[0]);
-                    document.dispatchEvent(new CustomEvent('min-dapp_app-state', {
-                        detail: {
-                            state: {
-                                extension,
-                                accounts
-                            }
-                        }
-                    }));
+                    setReefSigner({ extension, accounts });
                 });
             }catch (e) {
                 displayError(e);
@@ -46,23 +38,32 @@
             }
         }
 
-        document.addEventListener('min-dapp_initialized', () => document.body.classList.add("connected"));
-        document.addEventListener('min-dapp_evm-connected', () => document.body.classList.add("evm-connected"));
+        async function getContractValue (reefSigner) {
+            var ctrRes = await dappApi.getFlipperValue(reefSigner.signer);
+            console.log("vvv=",ctrRes);
+            document.getElementsByClassName('contract-value')[0].innerHTML = ctrRes;
+        }
+
+        async function toggleContractValue (reefSigner) {
+            var ctrRes = await dappApi.flipIt(reefSigner.signer);
+            console.log("flipped=",ctrRes);
+            document.getElementsByClassName('contract-value')[0].innerHTML = ctrRes;
+        }
+
         document.addEventListener('min-dapp_error', (ev) => displayError(ev.detail));
-        document.addEventListener('min-dapp_app-state', async (ev) => {
-            appState = ev.detail;
+        async function setReefSigner ({ extension, accounts }) {
             try {
-                reefSigner = await dappApi.getSigner(ev.detail.state.extension, ev.detail.state.accounts[0]);
+                reefSigner = await dappApi.getSigner(extension, accounts[0]);
             }catch (e){
                 displayError(e);
                 return;
             }
             if (await reefSigner.signer.isClaimed()) {
-                document.dispatchEvent(new Event('min-dapp_evm-connected'))
+                document.body.classList.add("evm-connected")
             }
             document.body.classList.add("extension-initialized");
-            document.dispatchEvent(new Event('min-dapp_initialized'))
-        });
+            document.body.classList.add("connected")
+        }
     </script>
     <script src="js/index.js"></script>
 
@@ -136,8 +137,12 @@
         </div>
     </div>
     <div class="evm-contract-calls">
-        <button type="button" onclick="dappApi.getFlipperValue(reefSigner.signer)">log contract value</button>
-        <button type="button" onclick="dappApi.flipIt(reefSigner.signer)">toggle contract value</button>
+        <div>
+            <p>Contract value:</p>
+            <h3 class="contract-value"></h3>
+        </div>
+        <button type="button" onclick="getContractValue(reefSigner)">get contract value</button>
+        <button type="button" onclick="toggleContractValue(reefSigner)">toggle contract value</button>
     </div>
 </div>
 <div class="error-display">
