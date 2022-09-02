@@ -8,11 +8,11 @@
         var dappApi;
         window.addEventListener('load', async ()=>{
             try {
-                dappApi = await initMinDapp();
+                dappApi = await getMnmlDappAPI();
                 const extension = await dappApi.getReefExtension('Minimal DApp Example');
                 extension.accounts.subscribe(async (accounts) => {
                     if (!accounts.length) {
-                        document.dispatchEvent(new CustomEvent('min-dapp_error', {detail: {message: 'Create or import account in extension.'}}))
+                        displayError({ message: 'Create or import account in extension.' });
                         return;
                     }
                     console.log("acounts=", accounts);
@@ -50,7 +50,6 @@
             document.getElementsByClassName('contract-value')[0].innerHTML = ctrRes;
         }
 
-        document.addEventListener('min-dapp_error', (ev) => displayError(ev.detail));
         async function setReefSigner ({ extension, accounts }) {
             try {
                 reefSigner = await dappApi.getSigner(extension, accounts[0]);
