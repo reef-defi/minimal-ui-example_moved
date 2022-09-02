@@ -4,9 +4,33 @@
     <meta charset="UTF-8">
     <title>Minml dApp example</title>
     <script>
-        var appState = {
-            selectedSigner: undefined,
-        }
+        var reefSigner;
+        var dappApi;
+        window.addEventListener('load', async ()=>{
+            try {
+                dappApi = await initMinDapp();
+                const extension = await dappApi.getReefExtension('Minimal DApp Example');
+                extension.accounts.subscribe(async (accounts) => {
+                    if (!accounts.length) {
+                        document.dispatchEvent(new CustomEvent('min-dapp_error', {detail: {message: 'Create or import account in extension.'}}))
+                        return;
+                    }
+                    console.log("acounts=", accounts);
+                    // const selectedSigner = await getSigner(extension, accounts[0]);
+                    document.dispatchEvent(new CustomEvent('min-dapp_app-state', {
+                        detail: {
+                            state: {
+                                extension,
+                                accounts
+                            }
+                        }
+                    }));
+                });
+            }catch (e) {
+                displayError(e);
+            }
+        });
+
         function displayError(e) {
             document.body.classList.add("reef-extension-error");
             document.getElementsByClassName('error-msg')[0].innerHTML = e.message;
@@ -17,8 +41,13 @@
         document.addEventListener('min-dapp_error', (ev) => displayError(ev.detail));
         document.addEventListener('min-dapp_app-state', async (ev) => {
             appState = ev.detail;
-            appState.selectedSigner = await ev.detail.api.getSigner(ev.detail.state.extension, ev.detail.state.accounts[0]);
-            if (await appState.selectedSigner.signer.isClaimed()) {
+            try {
+                reefSigner = await dappApi.getSigner(ev.detail.state.extension, ev.detail.state.accounts[0]);
+            }catch (e){
+                displayError(e);
+                return;
+            }
+            if (await reefSigner.signer.isClaimed()) {
                 document.dispatchEvent(new Event('min-dapp_evm-connected'))
             }
             document.body.classList.add("extension-initialized");
@@ -29,10 +58,10 @@
 
     <script>
 
-        async function bindEvm() {
+        async function bindEvm(reefSigner) {
             try {
                 document.body.classList.add("claiming-evm");
-                await appState.selectedSigner.claimDefaultAccount();
+                await reefSigner.signer.claimDefaultAccount();
                 document.body.classList.add("evm-connected");
             }catch (e) {
                 displayError(e);
@@ -103,15 +132,15 @@
     <div class="bind-evm">
         <div class="bind-start">
             <p>Click below to start calling EVM contracts</p>
-            <button type="button" onclick="bindEvm()">Enable contract interaction</button>
+            <button type="button" onclick="bindEvm(reefSigner)">Enable contract interaction</button>
         </div>
         <div class="binding-evm">
             <p>Transaction in progress ...</p>
         </div>
     </div>
     <div class="evm-contract-calls">
-        <button type="button" onclick="appState.api.getFlipperValue(appState.selectedSigner)">log contract value</button>
-        <button type="button" onclick="appState.api.flipIt(appState.selectedSigner)">toggle contract value</button>
+        <button type="button" onclick="dappApi.getFlipperValue(reefSigner.signer)">log contract value</button>
+        <button type="button" onclick="dappApi.flipIt(reefSigner.signer)">toggle contract value</button>
     </div>
 </div>
 <div class="error-display">

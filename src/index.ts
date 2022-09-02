@@ -3,7 +3,7 @@ import {flipIt, getFlipperValue} from "./flipperContract";
 import {getSigner} from "./signerUtil";
 import {availableNetworks, reefState, selectedSigner$} from "@reef-chain/util-lib";
 import {web3Enable} from "@reef-defi/extension-dapp";
-import {initReefExtension} from "./extensionUtil";
+import {getReefExtension} from "./extensionUtil";
 
 polyfill;
 
@@ -32,47 +32,44 @@ polyfill;
     }
 };*/
 
-(async function init() {
-    try {
-        console.log("min dApp init");
-        const extension = await initReefExtension('Minimal DApp Example');
-        extension.accounts.subscribe(async (accounts) => {
-            if (!accounts.length) {
-                throw new Error('Create or import account in extension.');
-            }
-            console.log("acounts=", accounts);
-            // const selectedSigner = await getSigner(extension, accounts[0]);
-            document.dispatchEvent(new CustomEvent('min-dapp_app-state', {
-                detail: {
-                    state: {
-                        extension,
-                        accounts
-                    },
-                    api: {
-                        getSigner,
-                        getFlipperValue: async (signer) => {
-                            let val = await getFlipperValue(signer);
-                            console.log('Flipper value = ', val);
-                            return val;
-                        },
-                        flipIt: async (signer) => {
-                            console.log("FLIPPING NOW");
-                            await flipIt(signer);
-                            const val = await getFlipperValue(signer);
-                            console.log('New value = ', val);
-                            return val;
-                        }
-                    }
+window.initMinDapp = async function () {
+    console.log("min dApp init");
+    /*const extension = await getReefExtension('Minimal DApp Example');
+    extension.accounts.subscribe(async (accounts) => {
+        if (!accounts.length) {
+            document.dispatchEvent(new CustomEvent('min-dapp_error', {detail: {message: 'Create or import account in extension.'}}))
+            return;
+        }
+        console.log("acounts=", accounts);
+        // const selectedSigner = await getSigner(extension, accounts[0]);
+        document.dispatchEvent(new CustomEvent('min-dapp_app-state', {
+            detail: {
+                state: {
+                    extension,
+                    accounts
                 }
-            }));
-        });
-    } catch (e) {
-        console.log("Error=", e);
-        document.dispatchEvent(new CustomEvent('min-dapp_error', {detail: e}))
+            }
+        }));
+    });*/
+    return {
+        getReefExtension,
+        getSigner,
+        getFlipperValue: async (signer) => {
+            let val = await getFlipperValue(signer);
+            console.log('Flipper value = ', val);
+            return val;
+        },
+        flipIt: async (signer) => {
+            console.log("FLIPPING NOW");
+            await flipIt(signer);
+            const val = await getFlipperValue(signer);
+            console.log('New value = ', val);
+            return val;
+        }
     }
     // document.body.classList.add("extension-initialized");
     // document.dispatchEvent(new Event('min-dapp_initialized'))
-}());
+};
 
 /*
 function displayError(e) {

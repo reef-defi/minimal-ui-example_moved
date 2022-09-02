@@ -1,7 +1,7 @@
 import {web3Enable} from "@reef-defi/extension-dapp";
 import {REEF_EXTENSION_IDENT} from "@reef-defi/extension-inject";
 
-export async function initReefExtension(appName) {
+export async function getReefExtension(appName) {
     const ext = await web3Enable(appName);
     if (!ext.length) {
         throw new Error('Install Reef Chain Wallet extension for Chrome or Firefox. See docs.reef.io');

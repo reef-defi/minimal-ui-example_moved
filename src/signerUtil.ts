@@ -46,11 +46,14 @@ function getReefDecimals() {
     return BigNumber.from('10').pow('18');
 }
 
-function getMnemonicSigner_serverSideOnly(mnemonic: string): EvmSigner{
+async function getMnemonicSigner_serverSideOnly(mnemonic: string): EvmSigner{
     const sigKey = new MnemonicSigner(mnemonic);
     return  new EvmSigner(await initProvider(), address, sigKey);
 }
 
+// IMPORTANT !!! do not share your mnemonic with anyone or you can loose all funds on account !!!
+// do not expose mnemonic in front-end
+// - protected server side example
 class MnemonicSigner implements SignerInterface {
     mnemonic: string;
 
