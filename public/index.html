@@ -36,6 +36,16 @@
             document.getElementsByClassName('error-msg')[0].innerHTML = e.message;
         }
 
+        async function bindEvm(reefSigner) {
+            try {
+                document.body.classList.add("claiming-evm");
+                await reefSigner.signer.claimDefaultAccount();
+                document.body.classList.add("evm-connected");
+            }catch (e) {
+                displayError(e);
+            }
+        }
+
         document.addEventListener('min-dapp_initialized', () => document.body.classList.add("connected"));
         document.addEventListener('min-dapp_evm-connected', () => document.body.classList.add("evm-connected"));
         document.addEventListener('min-dapp_error', (ev) => displayError(ev.detail));
@@ -56,19 +66,6 @@
     </script>
     <script src="js/index.js"></script>
 
-    <script>
-
-        async function bindEvm(reefSigner) {
-            try {
-                document.body.classList.add("claiming-evm");
-                await reefSigner.signer.claimDefaultAccount();
-                document.body.classList.add("evm-connected");
-            }catch (e) {
-                displayError(e);
-            }
-        }
-
-    </script>
     <style>
         .content {
             display: none;
