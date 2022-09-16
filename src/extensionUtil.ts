@@ -9,6 +9,5 @@ export async function getReefExtension(appName) {
         throw new Error('Install Reef Chain Wallet extension for Chrome or Firefox. See docs.reef.io');
     }
     console.log("Extension=", extension);
-
     return extension;
 }

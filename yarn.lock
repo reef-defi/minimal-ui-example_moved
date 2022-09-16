@@ -3003,10 +3003,10 @@
     "@types/websocket" "^1.0.5"
     websocket "^1.0.34"
 
-"@reef-chain/util-lib@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@reef-chain/util-lib/-/util-lib-0.0.1.tgz#002cba2ffe80f2a29d2f54d27fd8939021fedf96"
-  integrity sha512-ntm2HXxlq9zc/zE4mBs3/f+hyYC7vTJx4/5fmcCnYC/eJhaKH5/H86ygF84bN9DS7+J3szSwbVw1F3wOcCiySw==
+"@reef-chain/util-lib@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@reef-chain/util-lib/-/util-lib-0.0.8.tgz#01ebddee7d323ddc770c2a3ae4949bd5ea429d21"
+  integrity sha512-UWWARzIhP2JxG/i82JCjKDT/T5u5xc0+CuBHUjYjOTjOL6sCfro6SzQYpKbtcsLQZ4bO+TDxF7Rz9D1ch7rR/A==
   dependencies:
     "@apollo/client" "^3.6.9"
     "@polkadot/extension-inject" "^0.44.6"
@@ -3076,7 +3076,7 @@
     "@reef-defi/extension-inject" "^1.0.10"
     "@reef-defi/keyring" "^7.8.2"
 
-"@reef-defi/extension-dapp@^1.0.10", "@reef-defi/extension-dapp@^1.0.9":
+"@reef-defi/extension-dapp@^1.0.10":
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/@reef-defi/extension-dapp/-/extension-dapp-1.0.10.tgz#eda5a6a8f38fcbaad92259ad631309761b71851f"
   integrity sha512-MpPVexEZbfZ2f8UcA0a4D9b3U+1DzvzioEWY3l99hVFLeZfA5nL4R2pmEwfJ+wN9Fme0+8WsiNOR00u4SBu4Fg==
@@ -3086,10 +3086,27 @@
     "@reef-defi/util" "^7.8.2"
     "@reef-defi/util-crypto" "^7.8.2"
 
-"@reef-defi/extension-inject@^1.0.10", "@reef-defi/extension-inject@^1.0.9":
+"@reef-defi/extension-dapp@^1.0.12":
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/@reef-defi/extension-dapp/-/extension-dapp-1.0.12.tgz#1226a2292d1a21d4507963f327224158031d41f7"
+  integrity sha512-EAKggkd8qf/5NGHCxb/Dh+tcyeiBLoDtExR2UdKXuCo4KcLe/8wqkWdND/LlbhM+DNmM6z5iWr0QRyuasZjmyQ==
+  dependencies:
+    "@babel/runtime" "^7.16.0"
+    "@reef-defi/extension-inject" "^1.0.12"
+    "@reef-defi/util" "^7.8.2"
+    "@reef-defi/util-crypto" "^7.8.2"
+
+"@reef-defi/extension-inject@^1.0.10":
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/@reef-defi/extension-inject/-/extension-inject-1.0.10.tgz#e7d7ac599eb55a98c04b97edf4bf873f5ac422bc"
   integrity sha512-iNfU0kM9+JPUqRrRRsFIk1BYpQHfvR1UOrqxDmugVXU1TNheiJObmMvobfwSX79sc4D9/a4kxtYeukXHuIk36Q==
+  dependencies:
+    "@babel/runtime" "^7.16.0"
+
+"@reef-defi/extension-inject@^1.0.12":
+  version "1.0.12"
+  resolved "https://registry.yarnpkg.com/@reef-defi/extension-inject/-/extension-inject-1.0.12.tgz#619517b0780d706979d0aa5f3eef3d60cfb14564"
+  integrity sha512-2WLr+jzK69Pd4oW8q9vuhe0ownEP3/kgN0UfXUi52louxDZaGT1zM5HCJ1w8p93nzRiNTkWhL3G3eU56RCgzAQ==
   dependencies:
     "@babel/runtime" "^7.16.0"
 
@@ -4715,6 +4732,11 @@ crypto-browserify@^3.12.0:
     public-encrypt "^4.0.0"
     randombytes "^2.0.0"
     randomfill "^1.0.3"
+
+crypto-js@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.1.1.tgz#9e485bcf03521041bd85844786b83fb7619736cf"
+  integrity sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==
 
 crypto-random-string@^2.0.0:
   version "2.0.0"
@@ -10524,6 +10546,9 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
+
+"vitelib@file:.yalc/vitelib":
+  version "0.0.1"
 
 vue-template-es2015-compiler@^1.9.0:
   version "1.9.1"

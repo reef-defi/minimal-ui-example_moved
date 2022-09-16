@@ -4,20 +4,31 @@
     <meta charset="UTF-8">
     <title>Minml dApp example</title>
     <script>
-        var reefSigner;
+        var signer;
         var dappApi;
         window.addEventListener('load', async ()=>{
             try {
                 dappApi = await getMnmlDappAPI();
                 const extension = await dappApi.getReefExtension('Minimal DApp Example');
-                extension.accounts.subscribe(async (accounts) => {
+
+                dappApi.subscribeSigner(extension, (sigObj)=> {
+                        console.log("got signer=",sigObj);
+                    try{
+                        setReefSigner(sigObj.signer)
+                    }catch (err){
+                        displayError(err);
+                    }
+                },
+                displayError)
+                /*extension.accounts.subscribe(async (accounts) => {
                     if (!accounts.length) {
                         displayError({ message: 'Create or import account in extension.' });
                         return;
                     }
                     console.log("acounts=", accounts);
-                    setReefSigner({ extension, accounts });
-                });
+                    const rSigner = getReefSignerFromAccs({ extension, accounts });
+                    setReefSigner(rSigner.signer);
+                });*/
             }catch (e) {
                 displayError(e);
             }
@@ -28,36 +39,42 @@
             document.getElementsByClassName('error-msg')[0].innerHTML = e.message;
         }
 
-        async function bindEvm(reefSigner) {
+        async function bindEvm(sig) {
             try {
                 document.body.classList.add("claiming-evm");
-                await reefSigner.signer.claimDefaultAccount();
+                await sig.claimDefaultAccount();
                 document.body.classList.add("evm-connected");
             }catch (e) {
                 displayError(e);
             }
         }
 
-        async function getContractValue (reefSigner) {
-            var ctrRes = await dappApi.getFlipperValue(reefSigner.signer);
+        async function getContractValue (sig) {
+            var ctrRes = await dappApi.getFlipperValue(sig);
             console.log("vvv=",ctrRes);
             document.getElementsByClassName('contract-value')[0].innerHTML = ctrRes;
         }
 
-        async function toggleContractValue (reefSigner) {
-            var ctrRes = await dappApi.flipIt(reefSigner.signer);
+        async function toggleContractValue (sig) {
+            var ctrRes = await dappApi.flipIt(sig);
             console.log("flipped=",ctrRes);
             document.getElementsByClassName('contract-value')[0].innerHTML = ctrRes;
         }
 
-        async function setReefSigner ({ extension, accounts }) {
+        async function getReefSignerFromAccs ({ extension, accounts }) {
+            let sig;
             try {
-                reefSigner = await dappApi.getSigner(extension, accounts[0]);
+                sig = await dappApi.getSigner(extension, accounts[0]);
             }catch (e){
                 displayError(e);
                 return;
             }
-            if (await reefSigner.signer.isClaimed()) {
+            return sig;
+        }
+        async function setReefSigner (sig) {
+            signer = sig;
+            console.log("ssss=",signer);
+            if (await signer.isClaimed()) {
                 document.body.classList.add("evm-connected")
             }
             document.body.classList.add("extension-initialized");
@@ -129,7 +146,7 @@
     <div class="bind-evm">
         <div class="bind-start">
             <p>Click below to start calling EVM contracts</p>
-            <button type="button" onclick="bindEvm(reefSigner)">Enable contract interaction</button>
+            <button type="button" onclick="bindEvm(signer)">Enable contract interaction</button>
         </div>
         <div class="binding-evm">
             <p>Transaction in progress ...</p>
@@ -140,8 +157,8 @@
             <p>Contract value:</p>
             <h3 class="contract-value"></h3>
         </div>
-        <button type="button" onclick="getContractValue(reefSigner)">get contract value</button>
-        <button type="button" onclick="toggleContractValue(reefSigner)">toggle contract value</button>
+        <button type="button" onclick="getContractValue(signer)">get contract value</button>
+        <button type="button" onclick="toggleContractValue(signer)">toggle contract value</button>
     </div>
 </div>
 <div class="error-display">
