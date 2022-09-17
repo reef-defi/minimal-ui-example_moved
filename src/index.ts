@@ -1,6 +1,6 @@
 import polyfill from './polyfill';
 import {flipIt, getFlipperValue} from "./flipperContract";
-import {getSigner, subscribeSigner} from "./signerUtil";
+import {getSigner, subscribeToBalance, toREEFBalanceNormal} from "./signerUtil";
 import {getReefExtension} from "./extensionUtil";
 
 polyfill;
@@ -9,7 +9,8 @@ window.getMnmlDappAPI = async function () {
     return {
         getReefExtension,
         getSigner,
-        subscribeSigner,
+        toREEFBalanceNormal,
+        subscribeToBalance,
         getFlipperValue: async (signer) => {
             let val = await getFlipperValue(signer);
             console.log('Flipper value = ', val);

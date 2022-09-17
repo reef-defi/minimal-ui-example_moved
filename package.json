@@ -6,8 +6,8 @@
   "dependencies": {
     "@reef-chain/util-lib": "^0.0.8",
     "@reef-defi/evm-provider": "^1.0.9",
-    "@reef-defi/extension-dapp": "^1.0.12",
-    "@reef-defi/extension-inject": "^1.0.12",
+    "@reef-defi/extension-dapp": "^1.0.14",
+    "@reef-defi/extension-inject": "^1.0.14",
     "@reef-defi/util-crypto": "^7.8.2",
     "crypto-js": "^4.1.1",
     "esbuild": "^0.14.42",

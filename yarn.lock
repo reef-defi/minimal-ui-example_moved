@@ -3086,13 +3086,13 @@
     "@reef-defi/util" "^7.8.2"
     "@reef-defi/util-crypto" "^7.8.2"
 
-"@reef-defi/extension-dapp@^1.0.12":
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/@reef-defi/extension-dapp/-/extension-dapp-1.0.12.tgz#1226a2292d1a21d4507963f327224158031d41f7"
-  integrity sha512-EAKggkd8qf/5NGHCxb/Dh+tcyeiBLoDtExR2UdKXuCo4KcLe/8wqkWdND/LlbhM+DNmM6z5iWr0QRyuasZjmyQ==
+"@reef-defi/extension-dapp@^1.0.14":
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/@reef-defi/extension-dapp/-/extension-dapp-1.0.14.tgz#ce8e1583db7b1d39319cd69c60f6cdd45485ed20"
+  integrity sha512-iAe6xVS8uP2D9GUMYOBjgnOxDUi2TZGiwFVjUz6Ak9Do4VuWpuq1EgTAL0h6OVM5eSBgT52wZpzRTbAXz/HQNA==
   dependencies:
     "@babel/runtime" "^7.16.0"
-    "@reef-defi/extension-inject" "^1.0.12"
+    "@reef-defi/extension-inject" "^1.0.14"
     "@reef-defi/util" "^7.8.2"
     "@reef-defi/util-crypto" "^7.8.2"
 
@@ -3103,10 +3103,10 @@
   dependencies:
     "@babel/runtime" "^7.16.0"
 
-"@reef-defi/extension-inject@^1.0.12":
-  version "1.0.12"
-  resolved "https://registry.yarnpkg.com/@reef-defi/extension-inject/-/extension-inject-1.0.12.tgz#619517b0780d706979d0aa5f3eef3d60cfb14564"
-  integrity sha512-2WLr+jzK69Pd4oW8q9vuhe0ownEP3/kgN0UfXUi52louxDZaGT1zM5HCJ1w8p93nzRiNTkWhL3G3eU56RCgzAQ==
+"@reef-defi/extension-inject@^1.0.14":
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/@reef-defi/extension-inject/-/extension-inject-1.0.14.tgz#d8cfb0655613ac71140b3d32e0bf4b2c30676b5e"
+  integrity sha512-Gl38Zehr0bkl9G0eKE51z9BdX8Jmomn67DtjzJdmLeWLMyVCsywrbMyeLISxhKlk/GTy4AoQex9UEQChVXJlVg==
   dependencies:
     "@babel/runtime" "^7.16.0"
 
@@ -10546,9 +10546,6 @@ verror@1.10.0:
     assert-plus "^1.0.0"
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
-
-"vitelib@file:.yalc/vitelib":
-  version "0.0.1"
 
 vue-template-es2015-compiler@^1.9.0:
   version "1.9.1"
