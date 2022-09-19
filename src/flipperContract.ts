@@ -42,14 +42,7 @@ export function getFlipperContract(signer: EthersSigner) {
 
 export async function flipIt(signer: EvmSigner) {
     const flipperContract = getFlipperContract(signer);
-    try {
-        const result = await flipperContract.flip();
-        console.log(`Flipper SET TX: ${JSON.stringify(result)}`);
-        return result;
-    } catch (e){
-        console.log("FLIP ERROR=",e);
-        console.log('Value was not flipped! See console!');
-    }
+    return  await flipperContract.flip();
 }
 
 export async function getFlipperValue(signer: EvmSigner) {
