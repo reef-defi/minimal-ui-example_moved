@@ -15,13 +15,10 @@ export const toREEFBalanceNormal = (balanceBNDecimal: BigNumber|string) => {
 export const subscribeToBalance = async (signer: EvmSigner, cb: (freeBalance: any)=>void): Promise<Unsubcall> => {
     let address = await signer.getSubstrateAddress();
     const unsub = await signer.provider.api.query.system.account(address, ({ nonce, data: balance }) => {
-        //console.log(`free balance is ${balance.free} with ${balance.reserved} reserved and a nonce of ${nonce}`);
         cb(BigNumber.from(balance.free.toString()));
     });
     return unsub;
 }
-
-
 
 export const getSigner = async (extension: InjectedExtension, testAccount) => {
     const signer:EvmSigner = await initSigner(testAccount.address, extension.signer);
