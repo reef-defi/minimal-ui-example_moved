@@ -1,11 +1,15 @@
 import polyfill from './polyfill';
 import {flipIt, getFlipperValue} from "./flipperContract";
-import {subscribeToBalance, toREEFBalanceNormal} from "./signerUtil";
-import {getReefExtension} from "./extensionUtil";
-import {Signer} from "@reef-defi/evm-provider";
+import {getSigner, subscribeToBalance, toREEFBalanceNormal} from "./signerUtil";
+import {getInstallExtensionMessage, getReefExtension, NO_EXT_ERR} from "./extensionUtil";
+import {Signer } from "@reef-defi/evm-provider";
+import { resolveEvmAddress} from "@reef-defi/evm-provider/utils";
+import {InjectedAccount, InjectedExtension, ReefInjected} from "@reef-defi/extension-inject/types";
+import {getProvider} from "./providerUtil";
 
 polyfill;
 
+let reefExtension: ReefInjected;
 let selectedSigner: Signer;
 let selSignerConnectedEVM: boolean;
 let unsubBalance = () => {};
@@ -13,6 +17,15 @@ let unsubBalance = () => {};
 document.addEventListener('bind-evm-address', async (evt: any) => {
     if(await isSelectedAddress(evt.detail as string, selectedSigner, 'Error connecting EVM. Selected signer is not the same.')){
         bindEvm(selectedSigner);
+    }
+});
+
+document.addEventListener('select-account', async (evt: any) => {
+    try{
+        const signer = await getSigner(reefExtension as InjectedExtension, evt.detail as string);
+        await setSelectedSigner(signer.signer);
+    }catch (e) {
+        displayError(e);
     }
 });
 
@@ -30,9 +43,20 @@ document.addEventListener('toggle-contract-value', async (evt:any) => {
 
 window.addEventListener('load', async () => {
     try {
-        const extension = await getReefExtension('Minimal DApp Example');
+        reefExtension = await getReefExtension('Minimal DApp Example');
 
-        // reefSigner.subscribeSelectedAccountSigner is Reef extension custom feature otherwise we can use accounts
+        reefExtension.accounts.subscribe((accounts => {
+            try {
+                if (!accounts || !accounts.length) {
+                    throw new Error('Create or enable account in extension');
+                }
+                setAvailableAccounts(accounts, true);
+            } catch (e) {
+                displayError(e);
+            }
+        }));
+
+        /* future feature - this will be available to get selected signer from extension so dApp won't need to manage accounts
         extension.reefSigner.subscribeSelectedAccountSigner(async (sig) => {
             try {
                 if (!sig) {
@@ -42,8 +66,12 @@ window.addEventListener('load', async () => {
             } catch (err) {
                 displayError(err);
             }
-        });
+        });*/
     } catch (e) {
+        if (e.message === NO_EXT_ERR) {
+            displayError(getInstallExtensionMessage());
+            return;
+        }
         displayError(e);
     }
 });
@@ -129,4 +157,14 @@ async function toggleContractValue(sig) {
         displayError(e);
     }
     document.dispatchEvent(new Event('tx-complete'));
+}
+
+async function setAvailableAccounts(accounts: InjectedAccount[], useOnlyEvmReadyAccounts: boolean) {
+    if(useOnlyEvmReadyAccounts) {
+        const provider = await getProvider();
+        const resEvmArr = accounts.map(acc => resolveEvmAddress(provider, acc.address));
+        const resolved = await Promise.all(resEvmArr);
+        accounts = accounts.filter((acc, i) => !!resolved[i]);
+    }
+    document.dispatchEvent(new CustomEvent('accounts-change', {detail: accounts}));
 }

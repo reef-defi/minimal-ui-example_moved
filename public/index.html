@@ -14,6 +14,9 @@
             displaySignerAddress(addr);
             getContractValue(addr);
         });
+        document.addEventListener('accounts-change', (evt => {
+            displayAccounts(evt.detail);
+        }));
         document.addEventListener('clear-error', clearError);
         document.addEventListener('tx-progress', evt => {
             document.body.classList.add("transaction-progress");
@@ -39,6 +42,10 @@
             document.dispatchEvent(new CustomEvent('bind-evm-address', { detail: addr }));
         }
 
+        function selectAccount(addr) {
+            document.dispatchEvent(new CustomEvent('select-account', { detail: addr }));
+        }
+
         function getContractValue(addr) {
             document.dispatchEvent(new CustomEvent('get-contract-value', { detail: addr }));
         }
@@ -50,7 +57,11 @@
         function displayError(e) {
             resetUI();
             document.body.classList.add("reef-extension-error");
-            document.getElementsByClassName('error-msg')[0].innerHTML = e.message || e;
+            if (e.url) {
+                document.getElementsByClassName('error-msg')[0].innerHTML = '<p>'+e.message+' <br/><a href="'+e.url+'" target="_blank">continue</a></p>';
+            }else{
+                document.getElementsByClassName('error-msg')[0].innerHTML = e.message || e;
+            }
         }
 
         function clearError() {
@@ -62,12 +73,18 @@
             document.body.getElementsByClassName('selected-signer')[0].innerHTML = '<span style="font-weight:bold">Selected address:</span> ' + addr;
         }
 
+        async function displayAccounts(accounts) {
+            document.body.getElementsByClassName('account-list')[0].innerHTML = accounts.map(acc=>'<button onclick="selectAccount(`'+acc.address+'`)">'+acc.name+'</button><br/>')
+            .join('');
+        }
+
         async function resetUI() {
             document.body.classList.remove("evm-connected");
             document.body.classList.remove("connected");
             document.body.classList.remove("reef-extension-error");
             document.getElementsByClassName('contract-value')[0].innerHTML = '';
             document.getElementsByClassName('selected-signer')[0].innerHTML = '';
+            document.getElementsByClassName('account-list')[0].innerHTML = '';
             document.getElementsByClassName('reef-balance')[0].innerHTML = '';
             clearError();
         }
@@ -140,6 +157,7 @@
 <div class="connecting">
     <p>Connecting to chain, please wait ...</p>
 </div>
+<div class="account-list"></div>
 <div class="selected-signer"></div>
 <div class="reef-balance"></div>
 <div class="content">
