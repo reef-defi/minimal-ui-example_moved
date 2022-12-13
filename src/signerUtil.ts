@@ -47,35 +47,4 @@ function getReefDecimals() {
     return BigNumber.from('10').pow('18');
 }
 
-async function getMnemonicSigner_serverSideOnly(mnemonic: string): Promise<EvmSigner> {
-    const sigKey = new MnemonicSigner(mnemonic);
-    return  new EvmSigner(await initProvider(), address, sigKey);
-}
 
-// IMPORTANT !!! do not share your mnemonic with anyone or you can loose all funds on account !!!
-// do not expose mnemonic in front-end
-// - protected server side example
-class MnemonicSigner implements SignerInterface {
-    mnemonic: string;
-
-    constructor(mnemonic: string){
-     this.mnemonic = mnemonic;
-    }
-
-    async signPayload(payload: SignerPayloadJSON): Promise<SignerResult>{
-        const registry = new TypeRegistry();
-        registry.setSignedExtensions(payload.signedExtensions);
-
-        const pair: KeyringPair = await Keyring.keyPairFromMnemonic(this.mnemonic);
-
-        return registry
-            .createType('ExtrinsicPayload', payload, { version: payload.version })
-            .sign(pair);
-    }
-
-    async signRaw(payload: SignerPayloadRaw): Promise<SignerResult>{
-        const pair: KeyringPair = await Keyring.keyPairFromMnemonic(this.mnemonic);
-
-        return {id: 0, signature: u8aToHex(pair.sign(wrapBytes(message)))};
-    }
-}

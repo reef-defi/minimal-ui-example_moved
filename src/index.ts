@@ -33,7 +33,9 @@ window.addEventListener('load', async () => {
         const extension = await getReefExtension('Minimal DApp Example');
 
         // reefSigner.subscribeSelectedAccountSigner is Reef extension custom feature otherwise we can use accounts
-        extension.reefSigner.subscribeSelectedAccountSigner(async (sig) => {
+
+        extension.reefSigner.subscribeSelectedSigner(async (sig) => {
+            console.log("got signer =",sig);
             try {
                 if (!sig) {
                     throw new Error('Create account in Reef extension or make selected account visible.');
