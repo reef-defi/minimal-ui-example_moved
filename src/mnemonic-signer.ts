@@ -66,11 +66,11 @@ class MnemonicSigner implements SignerInterface {
     } else {
         console.log("Error initializing WASM");
     }
-    const signer = new MnemonicSigner('burger provide angry return spell silver ceiling produce antenna decrease evolve private');
+    const signingKey = new MnemonicSigner('burger provide angry return spell silver ceiling produce antenna decrease evolve private');
     const signMessage = 'hello world';
     const signingAddress = '5Fmkd81ZxQHc8krcy6oLJxdW88F8ZqWi8GPPFX4nYz9Wecvy';
 
-    const signedResult = await signer.signRaw({
+    const signedResult = await signingKey.signRaw({
         data: signMessage,
         address: signingAddress,
         type: "bytes"
