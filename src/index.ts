@@ -3,6 +3,7 @@ import {flipIt, getFlipperValue} from "./flipperContract";
 import {subscribeToBalance, toREEFBalanceNormal} from "./signerUtil";
 import {getReefExtension} from "./extensionUtil";
 import {Signer} from "@reef-defi/evm-provider";
+import {ReefSignerResponse, ReefSignerStatus, ReefVM} from "@reef-defi/extension-inject/types";
 
 polyfill;
 
@@ -33,14 +34,17 @@ window.addEventListener('load', async () => {
         const extension = await getReefExtension('Minimal DApp Example');
 
         // reefSigner.subscribeSelectedAccountSigner is Reef extension custom feature otherwise we can use accounts
-
-        extension.reefSigner.subscribeSelectedSigner(async (sig) => {
+        // const signer = await extension.reefSigner.getSelectedSigner();
+        extension.reefSigner.subscribeSelectedSigner(async (sig:ReefSignerResponse) => {
             console.log("got signer =",sig);
             try {
-                if (!sig) {
+                if (sig.status===ReefSignerStatus.NO_ACCOUNT_SELECTED) {
                     throw new Error('Create account in Reef extension or make selected account visible.');
                 }
-                setSelectedSigner(sig);
+                if (sig.status===ReefSignerStatus.SELECTED_NO_VM_CONNECTION) {
+                    throw new Error('Connect/bind selected account to Reef EVM.');
+                }
+                setSelectedSigner(sig.data);
             } catch (err) {
                 displayError(err);
             }

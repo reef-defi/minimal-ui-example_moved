@@ -2,8 +2,6 @@ import {Signer as EvmSigner} from "@reef-defi/evm-provider/Signer";
 import {BigNumber} from "ethers";
 import {initProvider} from "./providerUtil";
 import {InjectedExtension, Unsubcall} from "@reef-defi/extension-inject/types";
-import type {Signer as SignerInterface, SignerResult} from '@polkadot/api/types';
-import {wrapBytes} from "@reef-defi/extension-dapp";
 
 export const toREEFBalanceNormal = (balanceBNDecimal: BigNumber|string) => {
     if(typeof balanceBNDecimal === 'string'){
