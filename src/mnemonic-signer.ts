@@ -8,6 +8,9 @@ import {KeypairType} from "@reef-defi/util-crypto/types";
 import {Keyring as ReefKeyring} from "@reef-defi/keyring";
 import {cryptoWaitReady, decodeAddress, signatureVerify} from "@reef-defi/util-crypto";
 
+// this script should be run with 'npx ts-node ./src/mnemonic-signer.ts' since it's meant to be server-side only
+// use with caution at your own risk !!!
+
 const CRYPTO_TYPE: KeypairType = "sr25519";
 const SS58_FORMAT = 42;
 const keyring = new ReefKeyring({type: CRYPTO_TYPE, ss58Format: SS58_FORMAT});
