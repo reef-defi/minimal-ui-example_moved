@@ -3019,6 +3019,23 @@
     graphql "^16.6.0"
     subscriptions-transport-ws "^0.11.0"
 
+"@reef-chain/util-lib@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@reef-chain/util-lib/-/util-lib-0.4.0.tgz#2a3e8a2b8fd75cabb9f8275718d658264d24c446"
+  integrity sha512-uhp71ck3jqQ2Ure2SBrgr2nU/aed4rxe2oDve6GCGIuQjx2o5YzjUdi3O+hingqthxoZKXELwmDsCuEt9QjPZA==
+  dependencies:
+    "@apollo/client" "^3.6.9"
+    "@polkadot/extension-inject" "^0.44.6"
+    "@reef-defi/evm-provider" "^1.0.9"
+    "@reef-defi/extension-base" "^1.0.10"
+    "@reef-defi/extension-dapp" "^1.0.10"
+    "@reef-defi/extension-inject" "^1.0.10"
+    axios "^0.27.2"
+    bignumber.js "^9.1.0"
+    crypto-browserify "^3.12.0"
+    graphql "^16.6.0"
+    subscriptions-transport-ws "^0.11.0"
+
 "@reef-defi/api-derive@^1.0.4", "@reef-defi/api-derive@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@reef-defi/api-derive/-/api-derive-1.1.0.tgz#db7baedd53c8e7d065649d1f978763190966e344"
@@ -3063,33 +3080,33 @@
     ethers "~5.5.0"
 
 "@reef-defi/extension-base@^1.0.10":
-  version "1.0.15"
-  resolved "https://registry.yarnpkg.com/@reef-defi/extension-base/-/extension-base-1.0.15.tgz#1b4f07c70a629642ff0e8b2cedd783a94f9b4ab7"
-  integrity sha512-G6x2MouyZa/lLlWISAJwBSzVJMJhXfz6IQ2RKSqePFsTq8NqULf3/zFcP2td4qqd2xecN4jn50hI7A4OGeL+sg==
+  version "1.0.16"
+  resolved "https://registry.yarnpkg.com/@reef-defi/extension-base/-/extension-base-1.0.16.tgz#6f28840bb494ec95758894e1fb619964db7d591f"
+  integrity sha512-VrCO/cZ5lEe2u9rgDUz5UTPKCS1ukgTcEdrWKnpdmjRCEJdd9WJhHzr9X+d8+i5jwvF0IdBstytrNXEzRncvkQ==
   dependencies:
     "@babel/runtime" "^7.16.0"
     "@polkadot/api" "^6.7.1"
     "@polkadot/phishing" "^0.6.407"
     "@polkadot/ui-keyring" "^0.86.5"
-    "@reef-chain/util-lib" "^0.0.8"
-    "@reef-defi/extension-dapp" "^1.0.15"
-    "@reef-defi/extension-inject" "^1.0.15"
+    "@reef-chain/util-lib" "^0.4.0"
+    "@reef-defi/extension-dapp" "^1.0.16"
+    "@reef-defi/extension-inject" "^1.0.16"
     "@reef-defi/keyring" "^7.8.2"
 
-"@reef-defi/extension-dapp@^1.0.10", "@reef-defi/extension-dapp@^1.0.14", "@reef-defi/extension-dapp@^1.0.15":
-  version "1.0.15"
-  resolved "https://registry.yarnpkg.com/@reef-defi/extension-dapp/-/extension-dapp-1.0.15.tgz#0a5ed9a991a7c2fe95dfed6ffdc14ea3446b1d16"
-  integrity sha512-pU7rTHuwvJZBfUUsAOeO1xQiF7gdgcZW2AAVOLoDK959/rYFH+Pfi1rrN4cFOlYu289QSAaWQfHs6y0zSUQFdA==
+"@reef-defi/extension-dapp@^1.0.10", "@reef-defi/extension-dapp@^1.0.16":
+  version "1.0.16"
+  resolved "https://registry.yarnpkg.com/@reef-defi/extension-dapp/-/extension-dapp-1.0.16.tgz#5cb3e916747328d43789ed2bd8b8eddff1d365bf"
+  integrity sha512-+wt9dV7uAq512GzGyJUTse387TSero2/mfu5/wAJGS9rPd084rFIB0z5TRcQcEItgRUhLH/QjejChVDnAjqjhA==
   dependencies:
     "@babel/runtime" "^7.16.0"
-    "@reef-defi/extension-inject" "^1.0.15"
+    "@reef-defi/extension-inject" "^1.0.16"
     "@reef-defi/util" "^7.8.2"
     "@reef-defi/util-crypto" "^7.8.2"
 
-"@reef-defi/extension-inject@^1.0.10", "@reef-defi/extension-inject@^1.0.14", "@reef-defi/extension-inject@^1.0.15":
-  version "1.0.15"
-  resolved "https://registry.yarnpkg.com/@reef-defi/extension-inject/-/extension-inject-1.0.15.tgz#218df35e6d1c15314a3eee57a3c953dc74ddcddb"
-  integrity sha512-qdwlE2jhWxiMExCSFstEbhswRBnghTSGUAidim1rL9JwZsU/abDXtuSnD0mRiNQwDYl3eHe4fv4VGnxYw6c7Bw==
+"@reef-defi/extension-inject@^1.0.10", "@reef-defi/extension-inject@^1.0.16":
+  version "1.0.16"
+  resolved "https://registry.yarnpkg.com/@reef-defi/extension-inject/-/extension-inject-1.0.16.tgz#66178e640dc12054c3845d751c6791aa0208be66"
+  integrity sha512-J4tiNCDRkF92vc/Ba67zSa+bV3gSWyT9BcfAhPIb9rHjkBYGj2Rrd6lZFfaRYydSjO+HdLy9c3Zo/B+1nLMLzg==
   dependencies:
     "@babel/runtime" "^7.16.0"
 
@@ -3360,9 +3377,9 @@
     form-data "^3.0.0"
 
 "@types/node@*":
-  version "18.11.13"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.13.tgz#dff34f226ec1ac0432ae3b136ec5552bd3b9c0fe"
-  integrity sha512-IASpMGVcWpUsx5xBOrxMj7Bl8lqfuTY7FKAnPmu5cHkfQVWF8GulWS1jbRqA934qZL35xh5xN/+Xe/i26Bod4w==
+  version "18.11.15"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.15.tgz#de0e1fbd2b22b962d45971431e2ae696643d3f5d"
+  integrity sha512-VkhBbVo2+2oozlkdHXLrb3zjsRkpdnaU2bXmX8Wgle3PUi569eLRaHGlgETQHR7lLL1w7GiG3h9SnePhxNDecw==
 
 "@types/node@10.12.18":
   version "10.12.18"
@@ -6249,7 +6266,7 @@ get-caller-file@^2.0.1, get-caller-file@^2.0.5:
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-2.0.5.tgz#4f94412a82db32f36e3b0b9741f8a97feb031f7e"
   integrity sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==
 
-get-intrinsic@^1.0.2, get-intrinsic@^1.1.0, get-intrinsic@^1.1.1, get-intrinsic@^1.1.3:
+get-intrinsic@^1.0.2, get-intrinsic@^1.1.1, get-intrinsic@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/get-intrinsic/-/get-intrinsic-1.1.3.tgz#063c84329ad93e83893c7f4f243ef63ffa351385"
   integrity sha512-QJVz1Tj7MS099PevUG5jvnt9tSkXN8K14dxQlikJuPt4uD9hHAHjLyLBiLR5zELelBdD9QNRAXZzsJx0WaDL9A==
@@ -6799,11 +6816,11 @@ inquirer@^7.3.3:
     through "^2.3.6"
 
 internal-slot@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/internal-slot/-/internal-slot-1.0.3.tgz#7347e307deeea2faac2ac6205d4bc7d34967f59c"
-  integrity sha512-O0DB1JC/sPyZl7cIo78n5dR7eUSwwpYPiXRhTzNxZVAMUuB8vlnRFyLxdrVToks6XPLVnFfbzaVd5WLjhgg+vA==
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/internal-slot/-/internal-slot-1.0.4.tgz#8551e7baf74a7a6ba5f749cfb16aa60722f0d6f3"
+  integrity sha512-tA8URYccNzMo94s5MQZgH8NB/XTa6HsOo0MLfXTKKEnHVVdegzaQoFZ7Jp44bdvLvY2waT5dc+j5ICEswhi7UQ==
   dependencies:
-    get-intrinsic "^1.1.0"
+    get-intrinsic "^1.1.3"
     has "^1.0.3"
     side-channel "^1.0.4"
 
@@ -8350,9 +8367,9 @@ node-notifier@^8.0.0:
     which "^2.0.2"
 
 node-releases@^2.0.6:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.6.tgz#8a7088c63a55e493845683ebf3c828d8c51c5503"
-  integrity sha512-PiVXnNuFm5+iYkLBNeq5211hvO38y63T0i2KKh2KnUs3RpzJ+JtODFjkD8yjLwnDkTYF1eKXheUwdssR+NRZdg==
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.7.tgz#593edbc7c22860ee4d32d3933cfebdfab0c0e0e5"
+  integrity sha512-EJ3rzxL9pTWPjk5arA0s0dgXpnyiAbJDE6wHT62g7VsgrgQgmmZ+Ru++M1BFofncWja+Pnn3rEr3fieRySAdKQ==
 
 node-source-walk@^4.0.0, node-source-walk@^4.2.0, node-source-walk@^4.2.2:
   version "4.3.0"
