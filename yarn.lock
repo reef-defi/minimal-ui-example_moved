@@ -3103,10 +3103,27 @@
     "@reef-defi/util" "^7.8.2"
     "@reef-defi/util-crypto" "^7.8.2"
 
+"@reef-defi/extension-dapp@^1.0.18":
+  version "1.0.18"
+  resolved "https://registry.yarnpkg.com/@reef-defi/extension-dapp/-/extension-dapp-1.0.18.tgz#e0cce905767cbf253b552b9718a368d6cf2d4bf6"
+  integrity sha512-2jB4t/kiqnYG+uCyjeHIV6lGUB1DnVrVHbE9J8/wJs9aD9r7kZ9F3g5ZfTyTXyF2yITrI4YudGgeLvoUu8VOIA==
+  dependencies:
+    "@babel/runtime" "^7.16.0"
+    "@reef-defi/extension-inject" "^1.0.18"
+    "@reef-defi/util" "^7.8.2"
+    "@reef-defi/util-crypto" "^7.8.2"
+
 "@reef-defi/extension-inject@^1.0.10", "@reef-defi/extension-inject@^1.0.16":
   version "1.0.16"
   resolved "https://registry.yarnpkg.com/@reef-defi/extension-inject/-/extension-inject-1.0.16.tgz#66178e640dc12054c3845d751c6791aa0208be66"
   integrity sha512-J4tiNCDRkF92vc/Ba67zSa+bV3gSWyT9BcfAhPIb9rHjkBYGj2Rrd6lZFfaRYydSjO+HdLy9c3Zo/B+1nLMLzg==
+  dependencies:
+    "@babel/runtime" "^7.16.0"
+
+"@reef-defi/extension-inject@^1.0.18":
+  version "1.0.18"
+  resolved "https://registry.yarnpkg.com/@reef-defi/extension-inject/-/extension-inject-1.0.18.tgz#2f341112208bb8b6eeb06560fa5a164b222dc45d"
+  integrity sha512-9jBgoK2Rgf+jATJRscUkEPFmv1NFNG/MS+B2/Tz6wwX60vCSHbGangJpqBnCdeYqzMRYR3zNkPxE/KlJUFOQFw==
   dependencies:
     "@babel/runtime" "^7.16.0"
 
@@ -4073,9 +4090,9 @@ bindings@^1.3.0, bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-"bip32-ed25519@git+https://github.com/Zondax/bip32-ed25519.git":
+"bip32-ed25519@https://github.com/Zondax/bip32-ed25519":
   version "0.0.4"
-  resolved "git+https://github.com/Zondax/bip32-ed25519.git#0949df01b5c93885339bc28116690292088f6134"
+  resolved "https://github.com/Zondax/bip32-ed25519#0949df01b5c93885339bc28116690292088f6134"
   dependencies:
     bn.js "^5.1.1"
     elliptic "^6.4.1"

@@ -3,7 +3,7 @@ import {flipIt, getFlipperValue} from "./flipperContract";
 import {subscribeToBalance, toREEFBalanceNormal} from "./signerUtil";
 import {getReefExtension} from "./extensionUtil";
 import {Signer} from "@reef-defi/evm-provider";
-import {ReefSignerResponse, ReefSignerStatus, ReefVM} from "@reef-defi/extension-inject/types";
+import {ReefSignerResponse, ReefSignerStatus, ReefInjected } from "@reef-defi/extension-inject/types";
 
 polyfill;
 
@@ -31,11 +31,18 @@ document.addEventListener('toggle-contract-value', async (evt:any) => {
 
 window.addEventListener('load', async () => {
     try {
-        const extension = await getReefExtension('Minimal DApp Example');
+        const extension = await getReefExtension('Minimal DApp Example') as ReefInjected;
 
         // reefSigner.subscribeSelectedAccountSigner is Reef extension custom feature otherwise we can use accounts
         // const signer = await extension.reefSigner.getSelectedSigner();
-        extension.reefSigner.subscribeSelectedSigner(async (sig:ReefSignerResponse) => {
+        setTimeout(async ()=>{
+            const prov = await extension.reefProvider.getNetworkProvider();
+            const signer = await extension.reefSigner.getSelectedSigner();
+            console.log("ppp=",prov, ' ss=',signer);
+        }, 0)
+
+        // return;
+        /*extension.reefSigner.subscribeSelectedSigner(async (sig:ReefSignerResponse) => {
             console.log("got signer =",sig);
             try {
                 if (sig.status===ReefSignerStatus.NO_ACCOUNT_SELECTED) {
@@ -48,7 +55,7 @@ window.addEventListener('load', async () => {
             } catch (err) {
                 displayError(err);
             }
-        });
+        });*/
     } catch (e) {
         displayError(e);
     }
