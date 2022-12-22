@@ -41,14 +41,15 @@ window.addEventListener('load', async () => {
 
         extension.reefSigner.subscribeSelectedSigner(async (sig:ReefSignerResponse) => {
             console.log("signer cb =",sig);
-            console.log("signer connected to mainnet =", await isMainnet(sig.data));
-
             try {
                 if (sig.status===ReefSignerStatus.NO_ACCOUNT_SELECTED) {
                     throw new Error('Create account in Reef extension or make selected account visible.');
                 }
                 if (sig.status===ReefSignerStatus.SELECTED_NO_VM_CONNECTION) {
                     throw new Error('Connect/bind selected account to Reef EVM.');
+                }
+                if(sig.data) {
+                    console.log("signer connected to mainnet =", await isMainnet(sig.data));
                 }
                 setSelectedSigner(sig.data);
             } catch (err) {
