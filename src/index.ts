@@ -3,6 +3,7 @@ import {flipIt, getFlipperValue} from "./flipperContract";
 import {subscribeToBalance, toREEFBalanceNormal} from "./signerUtil";
 import {getReefExtension} from "./extensionUtil";
 import {Signer} from "@reef-defi/evm-provider";
+import {isMainnet} from "@reef-defi/evm-provider/utils";
 import {ReefSignerResponse, ReefSignerStatus, ReefInjected } from "@reef-defi/extension-inject/types";
 
 polyfill;
@@ -33,17 +34,15 @@ window.addEventListener('load', async () => {
     try {
         const extension = await getReefExtension('Minimal DApp Example') as ReefInjected;
 
-        // reefSigner.subscribeSelectedAccountSigner is Reef extension custom feature otherwise we can use accounts
+        // we can also get provider and signer
+        // const prov = await extension.reefProvider.getNetworkProvider();
         // const signer = await extension.reefSigner.getSelectedSigner();
-        setTimeout(async ()=>{
-            const prov = await extension.reefProvider.getNetworkProvider();
-            const signer = await extension.reefSigner.getSelectedSigner();
-            console.log("ppp=",prov, ' ss=',signer);
-        }, 0)
+        // console.log("provider=",await prov.api.genesisHash.toString(), ' signer=',signer);
 
-        // return;
-        /*extension.reefSigner.subscribeSelectedSigner(async (sig:ReefSignerResponse) => {
-            console.log("got signer =",sig);
+        extension.reefSigner.subscribeSelectedSigner(async (sig:ReefSignerResponse) => {
+            console.log("signer cb =",sig);
+            console.log("signer connected to mainnet =", await isMainnet(sig.data));
+
             try {
                 if (sig.status===ReefSignerStatus.NO_ACCOUNT_SELECTED) {
                     throw new Error('Create account in Reef extension or make selected account visible.');
@@ -55,7 +54,7 @@ window.addEventListener('load', async () => {
             } catch (err) {
                 displayError(err);
             }
-        });*/
+        });
     } catch (e) {
         displayError(e);
     }
@@ -128,8 +127,12 @@ async function bindEvm(sig) {
 }
 
 async function getContractValue(sig) {
-    const ctrRes = await getFlipperValue(sig);
-    document.dispatchEvent(new CustomEvent('contract-value', {detail: ctrRes}));
+    try {
+        const ctrRes = await getFlipperValue(sig);
+        document.dispatchEvent(new CustomEvent('contract-value', {detail: ctrRes}));
+    }catch (e) {
+        document.dispatchEvent(new CustomEvent('contract-value', {detail: e.message}));
+    }
 }
 
 async function toggleContractValue(sig) {

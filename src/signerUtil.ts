@@ -1,4 +1,4 @@
-import {Signer as EvmSigner} from "@reef-defi/evm-provider/Signer";
+import {Signer as EvmSigner} from "@reef-defi/evm-provider";
 import {BigNumber} from "ethers";
 import {initProvider} from "./providerUtil";
 import {InjectedExtension, Unsubcall} from "@reef-defi/extension-inject/types";
