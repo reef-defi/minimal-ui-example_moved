@@ -144,6 +144,7 @@ async function bindEvm(sig) {
 
 async function getContractValue(sig) {
     const ctrRes = await getFlipperValue(sig);
+    console.log('contract value=',ctrRes)
     document.dispatchEvent(new CustomEvent('contract-value', {detail: ctrRes}));
 }
 
