@@ -1,10 +1,11 @@
 import polyfill from './polyfill';
 import {flipIt, getFlipperValue} from "./flipperContract";
-import {subscribeToBalance, toREEFBalanceNormal} from "./signerUtil";
+import {getSigner, subscribeToBalance, toREEFBalanceNormal} from "./signerUtil";
 import {getReefExtension} from "./extensionUtil";
 import {Signer} from "@reef-defi/evm-provider";
 import {isMainnet} from "@reef-defi/evm-provider/utils";
 import {ReefSignerResponse, ReefSignerStatus, ReefInjected } from "@reef-defi/extension-inject/types";
+import {initProvider} from "./providerUtil";
 
 polyfill;
 
@@ -38,7 +39,10 @@ window.addEventListener('load', async () => {
         // const prov = await extension.reefProvider.getNetworkProvider();
         // const signer = await extension.reefSigner.getSelectedSigner();
         // console.log("provider=",await prov.api.genesisHash.toString(), ' signer=',signer);
-
+        const provider = await initProvider()
+        const lastHeader = await provider.api.rpc.chain.getHeader();
+        console.log('current head=', lastHeader.number.toString())
+        return
         extension.reefSigner.subscribeSelectedSigner(async (sig:ReefSignerResponse) => {
             console.log("signer cb =",sig);
             try {
