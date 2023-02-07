@@ -13,7 +13,7 @@ the project further:
 git clone https://github.com/reef-defi/minimal-ui-example
 cd minimal-ui-example/
 yarn install
-yarn start
+yarn serve
 ```
 
 ## Licensing
