@@ -1,4 +1,4 @@
-<img src="https://i.imgur.com/DTv57Sk.png" width="150" alt="Reef" align="right">
+<img src="https://i.imgur.com/DTv57Sk.png" width="120" alt="Reef" align="right">
 
 # Reef Minimal Ui Example
 
