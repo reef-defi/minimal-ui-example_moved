@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Minml dApp example</title>
+    <title>Minimal Reef dApp Ui example</title>
     <script>
         var selectedAddress;
 
@@ -28,7 +28,7 @@
             displayError(evt.detail);
         }));
         document.addEventListener('balance-value', (evt => {
-            document.body.getElementsByClassName('reef-balance')[0].innerHTML = '<span style="font-weight:bold">Balance:</span> ' + evt.detail + ' REEF';
+            document.body.getElementsByClassName('reef-balance')[0].innerHTML = '<span style="font-weight:bold">Balance:</span> ' + evt.detail + ' <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/6951.png" height="17" width="17" alt=Reef Coin" />';
         }));
         document.addEventListener('evm-connected', () => document.body.classList.add("evm-connected"));
         document.addEventListener('contract-value', (evt => {
@@ -36,15 +36,15 @@
         }));
 
         function bindEvm(addr) {
-            document.dispatchEvent(new CustomEvent('bind-evm-address', { detail: addr }));
+            document.dispatchEvent(new CustomEvent('bind-evm-address', {detail: addr}));
         }
 
         function getContractValue(addr) {
-            document.dispatchEvent(new CustomEvent('get-contract-value', { detail: addr }));
+            document.dispatchEvent(new CustomEvent('get-contract-value', {detail: addr}));
         }
 
         function toggleContractValue(addr) {
-            document.dispatchEvent(new CustomEvent('toggle-contract-value', { detail: addr }));
+            document.dispatchEvent(new CustomEvent('toggle-contract-value', {detail: addr}));
         }
 
         function displayError(e) {
@@ -74,8 +74,113 @@
     </script>
     <script src="js/index.js"></script>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 70vh;
+            background: #EFEBF7;
+            text-align: center;
+        }
+
+        .container {
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 3px 30px 0 rgba(0, 0, 0, .07);
+            padding: 20px 40px;
+        }
+
+        .connecting {
+            margin: 10px 0;
+        }
+
+        .selected-signer, .reef-balance {
+            margin: 20px 0;
+        }
+
         .content {
             display: none;
+            margin: 30px 0;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bind-evm {
+            margin: 10px 0;
+        }
+
+        .bind-start {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn {
+            border: none;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background: linear-gradient(135deg,#ae27a5,#742cb2);
+            box-shadow: 0 5px 20px -10px #742cb2;
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.15);
+        }
+
+
+        .btn-secondary {
+            color: #a93186;
+            background: #e8dff0;
+        }
+
+        .btn-secondary:hover {
+            background: #e1d5ec;
+        }
+
+        .evm-contract-calls {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .contract-value {
+            margin: 10px 0;
+        }
+
+        .tx-btns {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .transaction-progress-display {
+            margin: 20px 0;
+        }
+
+        .error-display {
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: red;
+        }
+
+        .error-msg {
+            margin: 10px 0;
         }
 
         .extension-initialized.connected .content {
@@ -92,10 +197,6 @@
 
         .reef-extension-error .error-display {
             display: block;
-        }
-
-        .content {
-            display: none;
         }
 
         code {
@@ -130,42 +231,48 @@
             display: none;
         }
 
-        .tx-btns {
-            display: block;
-        }
     </style>
 </head>
 <body>
-<h3>Minml dApp</h3>
-<div class="connecting">
-    <p>Connecting to chain, please wait ...</p>
-</div>
-<div class="selected-signer"></div>
-<div class="reef-balance"></div>
-<div class="content">
-    <div class="bind-evm">
-        <div class="bind-start">
-            <p>Enough balance to enable EVM contracts for account</p>
-            <button type="button" onclick="bindEvm(selectedAddress)">Connect EVM layer</button>
+<div>
+    <div>
+        <div class="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="206" height="105" fill="none"><path fill="#603BAB" d="M182.768 69.392a8.09 8.09 0 0 0-3.59.813 9.094 9.094 0 0 0-2.912 2.066c-.824.877-1.483 1.9-1.98 3.067a9.465 9.465 0 0 0-.68 3.57 7.59 7.59 0 0 0 .557 2.879 7.916 7.916 0 0 0 1.487 2.317 7.205 7.205 0 0 0 2.289 1.564 6.334 6.334 0 0 0 2.786.627c1.198 0 2.331-.27 3.407-.814a8.533 8.533 0 0 0 2.786-2.067 10.16 10.16 0 0 0 1.919-3.129c.495-1.169.743-2.4.743-3.694 0-2.045-.64-3.756-1.919-5.133-1.239-1.378-2.869-2.066-4.893-2.066Z"/><path fill="url(#a)" d="M119.757 64.503a34.812 34.812 0 0 1 1.718-3.457 46.631 46.631 0 0 1 2.252-3.696 19.287 19.287 0 0 1 2.904-3.28 14.243 14.243 0 0 1 3.614-2.384c1.303-.596 2.706-.894 4.207-.894h.534c.157 0 .333.02.531.059.475.08.89.298 1.245.657.395.357.593.834.593 1.43 0 .715-.336 1.57-1.007 2.563-.672.955-1.896 1.987-3.673 3.1-.396.239-1.086.696-2.074 1.371a82.641 82.641 0 0 1-3.378 2.265c-1.303.835-2.706 1.71-4.208 2.623a60.378 60.378 0 0 1-4.264 2.445c.237-.755.573-1.69 1.006-2.802Zm-39.995-3.457a45.63 45.63 0 0 1 2.252-3.696 19.258 19.258 0 0 1 2.904-3.28 14.225 14.225 0 0 1 3.614-2.384c1.304-.596 2.706-.894 4.207-.894h.533c.158 0 .335.02.533.059.474.08.888.298 1.245.657.395.357.593.834.593 1.43 0 .715-.336 1.57-1.008 2.563-.672.955-1.896 1.987-3.675 3.1-.394.239-1.085.696-2.073 1.371a80.758 80.758 0 0 1-3.377 2.265c-1.305.835-2.705 1.71-4.207 2.623a60.65 60.65 0 0 1-3.953 2.274 2.313 2.313 0 0 0-.18-.225 48.93 48.93 0 0 1 .874-2.406 34.912 34.912 0 0 1 1.719-3.457Zm125.081-38.869c-.474-1.352-1.107-2.465-1.897-3.339a7.193 7.193 0 0 0-2.664-1.968 7.697 7.697 0 0 0-3.142-.655c-2.369 0-4.858.417-7.464 1.25-2.57.836-5.215 2.327-7.942 4.472-2.725 2.147-5.508 5.069-8.353 8.764-2.806 3.697-5.61 8.386-8.415 14.07h-6.991c-1.896 0-3.338.457-4.326 1.371-.987.874-1.481 1.788-1.481 2.742 0 .913.395 1.71 1.185 2.385.791.676 2.271 1.013 4.444 1.013h3.141l-6.55 13.965c-.399.21-.977.54-1.746.998a94.022 94.022 0 0 1-3.911 2.265c-1.54.875-3.278 1.809-5.213 2.802a91.205 91.205 0 0 1-5.985 2.684 48.984 48.984 0 0 1-6.162 2.086c-2.054.517-3.99.775-5.807.775-1.699 0-3.061-.318-4.089-.953-1.026-.676-1.638-1.59-1.836-2.743 5.372-1.988 9.835-3.954 13.391-5.902 3.595-1.987 6.458-3.915 8.591-5.782 2.134-1.908 3.635-3.776 4.503-5.604.869-1.829 1.304-3.577 1.304-5.247 0-2.822-.81-5.027-2.431-6.618-1.617-1.589-4.066-2.383-7.347-2.383-3.119 0-6.061.456-8.828 1.37-2.725.915-5.233 2.127-7.524 3.637a34.393 34.393 0 0 0-6.221 5.247c-1.818 1.947-3.358 3.954-4.623 6.02-1.263 2.066-2.231 4.134-2.902 6.201-.551 1.657-.863 3.205-.963 4.65a143.372 143.372 0 0 1-4.785 2.562 90.616 90.616 0 0 1-5.985 2.684 48.956 48.956 0 0 1-6.162 2.086c-2.053.517-3.989.775-5.806.775-1.699 0-3.062-.318-4.088-.953-1.027-.676-1.64-1.59-1.837-2.743 5.372-1.988 9.836-3.954 13.39-5.902 3.595-1.987 6.459-3.915 8.592-5.782 2.133-1.908 3.634-3.776 4.503-5.604.869-1.829 1.304-3.577 1.304-5.247 0-2.822-.81-5.027-2.43-6.618-1.619-1.589-4.068-2.383-7.347-2.383-3.12 0-6.063.456-8.829 1.37-2.725.915-5.233 2.127-7.525 3.637a34.438 34.438 0 0 0-6.22 5.247c-1.818 1.947-3.36 3.954-4.622 6.02-1.265 2.066-2.232 4.134-2.904 6.201-.671 2.026-1.006 3.894-1.006 5.603 0 1.057.08 2.09.232 3.102a29.058 29.058 0 0 1-3.954 2.025c-2.253.954-4.82 1.43-7.703 1.43h-.83a7.14 7.14 0 0 1-.888-.06c-1.582-.118-3.082-.913-4.505-2.384-1.421-1.47-2.725-3.238-3.91-5.306a47.602 47.602 0 0 1-2.963-6.616c-.79-2.346-1.362-4.452-1.719-6.32 2.53-.437 5.136-1.152 7.823-2.146a55.046 55.046 0 0 0 7.94-3.636 50.163 50.163 0 0 0 7.227-4.89c2.292-1.867 4.287-3.893 5.986-6.08a29.521 29.521 0 0 0 4.028-7.094 21.117 21.117 0 0 0 1.54-7.989c0-4.132-.849-7.749-2.546-10.85a22.161 22.161 0 0 0-6.755-7.69c-2.845-2.067-6.124-3.616-9.837-4.65C50.325.518 46.474 0 42.445 0c-4.109 0-7.999.437-11.672 1.311C27.098 2.145 23.7 3.28 20.58 4.71c-3.081 1.391-5.866 3.02-8.353 4.89-2.49 1.827-4.603 3.735-6.342 5.722-1.697 1.987-3.02 3.974-3.969 5.96C1.01 23.27.554 25.119.554 26.828c0 1.828.494 3.258 1.48 4.292.988.993 2.47 1.49 4.444 1.49 1.462 0 2.686-.338 3.674-1.013.989-.676 1.877-1.55 2.667-2.623.829-1.073 1.62-2.305 2.37-3.697a84.159 84.159 0 0 1 2.488-4.291 32.773 32.773 0 0 1 3.319-4.293c1.303-1.392 2.884-2.622 4.74-3.696 1.896-1.074 4.127-1.948 6.696-2.623 2.606-.676 5.708-1.014 9.301-1.014 3.201 0 5.945.377 8.236 1.133 2.33.755 4.227 1.768 5.689 3.04 1.5 1.272 2.587 2.762 3.259 4.47a13.981 13.981 0 0 1 1.066 5.426c0 2.663-.67 5.405-2.014 8.227-1.305 2.822-3.102 5.385-5.392 7.69-2.291 2.305-4.977 4.213-8.059 5.723-3.042 1.47-6.28 2.207-9.717 2.207h-.83c-.237 0-.473-.02-.71-.06a761.499 761.499 0 0 0 2.962-6.38 172.147 172.147 0 0 0 2.489-5.782c.71-1.749 1.283-3.298 1.717-4.65.436-1.352.653-2.404.653-3.16 0-.754-.118-1.37-.356-1.847-.237-.517-.512-.894-.83-1.134a2.268 2.268 0 0 0-1.065-.535c-.396-.12-.732-.179-1.008-.179-1.027 0-2.193.596-3.496 1.788-1.264 1.153-2.626 2.703-4.088 4.65-1.423 1.948-2.904 4.193-4.444 6.736a274.077 274.077 0 0 0-4.504 7.81L3.813 76.723c-.435.835-.771 1.73-1.008 2.683a11.59 11.59 0 0 0-.355 2.802c0 .636.079 1.311.237 2.027.198.715.513 1.37.948 1.967.434.596 1.047 1.093 1.837 1.49.79.398 1.816.597 3.081.597 1.54 0 2.963-.557 4.266-1.67s2.528-2.563 3.673-4.351c1.146-1.829 2.193-3.876 3.14-6.14.948-2.307 1.857-4.632 2.725-6.976.87-2.345 1.681-4.61 2.431-6.796.75-2.226 1.481-4.153 2.19-5.783a112.38 112.38 0 0 0 4.327 11.804c1.62 3.696 3.416 6.935 5.392 9.717 1.975 2.783 4.168 4.988 6.577 6.618 2.41 1.63 5.037 2.444 7.88 2.444 3.476 0 7.15-.875 11.022-2.623 1.873-.857 3.766-1.958 5.676-3.29.278.416.575.817.89 1.203a14.66 14.66 0 0 0 4.681 3.696c1.856.915 3.97 1.371 6.34 1.371 2.764 0 5.57-.377 8.413-1.132a55.042 55.042 0 0 0 8.178-2.742 72.63 72.63 0 0 0 7.465-3.637 114.95 114.95 0 0 0 3.948-2.353c.658 1.79 1.545 3.396 2.687 4.797a14.698 14.698 0 0 0 4.681 3.696c1.857.915 3.971 1.371 6.34 1.371 2.765 0 5.571-.377 8.415-1.132a55.01 55.01 0 0 0 8.176-2.742 72.493 72.493 0 0 0 7.466-3.637 120.129 120.129 0 0 0 3.323-1.961l-8.833 18.832a24.649 24.649 0 0 0-1.008 2.384c-.237.717-.355 1.333-.355 1.849 0 1.033.375 1.788 1.124 2.265.752.477 1.601.716 2.55.716.671 0 1.402-.16 2.191-.477a8.742 8.742 0 0 0 2.311-1.253 11.04 11.04 0 0 0 2.074-2.026 11.66 11.66 0 0 0 1.599-2.504 267.949 267.949 0 0 0 2.49-5.187c1.027-2.146 2.172-4.55 3.436-7.213 1.264-2.703 2.587-5.544 3.97-8.524 1.423-3.022 2.825-6.002 4.207-8.943 1.423-2.941 2.765-5.743 4.029-8.406a412.885 412.885 0 0 1 3.496-7.093h10.311c1.737-.041 3.515-.08 5.33-.12 1.857-.04 3.813-.1 5.867-.179 1.067-.08 1.935-.238 2.607-.477.673-.278 1.185-.596 1.541-.954.394-.398.671-.815.83-1.252.159-.436.237-.874.237-1.311 0-.875-.237-1.53-.711-1.967-.436-.477-1.067-.816-1.897-1.014-.79-.199-1.717-.317-2.785-.358a93.186 93.186 0 0 0-3.436-.059h-13.804c.985-2.385 2.251-4.71 3.79-6.976 1.542-2.305 3.141-4.352 4.799-6.14 1.698-1.788 3.358-3.219 4.978-4.292 1.659-1.073 3.101-1.61 4.325-1.61 1.029 0 1.836.357 2.431 1.074.631.715.947 1.907.947 3.576 0 .438-.041.875-.119 1.312-.04.437-.059.914-.059 1.43 0 .796.336 1.391 1.007 1.79.67.356 1.402.535 2.194.535.314 0 .69-.04 1.125-.119a5.976 5.976 0 0 0 1.302-.536c.436-.24.83-.536 1.186-.895.357-.398.594-.874.711-1.43.474-2.067.711-3.954.711-5.663 0-1.79-.237-3.339-.711-4.65Z"/><defs><linearGradient id="a" x1="16.381" x2="197.409" y1="52.132" y2="55.083" gradientUnits="userSpaceOnUse"><stop stop-color="#A2328A"/><stop offset="1" stop-color="#603BAB"/></linearGradient></defs></svg>
+        </div>
+        <h1>Minimal Reef dApp</h1>
+    </div>
+    <div class="container">
+        <div class="connecting">
+            <p>Connecting to Reef Chain, please wait ...</p>
+        </div>
+        <div class="selected-signer"></div>
+        <div class="reef-balance"></div>
+        <div class="content">
+            <div class="bind-evm">
+                <div class="bind-start">
+                    <p>Enough balance to enable EVM contracts for account</p>
+                    <button type="button" onclick="bindEvm(selectedAddress)">Connect EVM layer</button>
+                </div>
+            </div>
+            <div class="evm-contract-calls">
+                <div>
+                    <h3 class="contract-value"></h3>
+                    <small>Note: contract value is not account specific so others can flip it as well.</small>
+                </div>
+                <div class="tx-btns">
+                    <button class="btn btn-primary" type="button" onclick="getContractValue(selectedAddress)">get contract value</button>
+                    <button class="btn btn-secondary" type="button" onclick="toggleContractValue(selectedAddress)">toggle contract value</button>
+                </div>
+            </div>
+            <div class="transaction-progress-display">
+                <p>Transaction in progress ...</p>
+            </div>
+        </div>
+        <div class="error-display">
+            <h3>ERROR</h3>
+            <div class="error-msg"></div>
         </div>
     </div>
-    <div class="evm-contract-calls">
-        <div>
-            <h3 class="contract-value"></h3>
-            <small>Note: contract value is not account specific so others can flip it as well.</small>
-        </div>
-        <div class="tx-btns">
-            <button type="button" onclick="getContractValue(selectedAddress)">get contract value</button>
-            <button type="button" onclick="toggleContractValue(selectedAddress)">toggle contract value</button>
-        </div>
-    </div>
-    <div class="transaction-progress-display">
-        <p>Transaction in progress ...</p>
-    </div>
-</div>
-<div class="error-display">
-    <h3>ERROR</h3>
-    <div class="error-msg"></div>
 </div>
 </body>
 </html>
