@@ -3,8 +3,9 @@ import {flipIt, getFlipperValue} from "./flipperContract";
 import {subscribeToBalance, toREEFBalanceNormal} from "./signerUtil";
 import {getReefExtension} from "./extensionUtil";
 import {Signer} from "@reef-defi/evm-provider";
+import {ReefInjected, ReefSignerResponse, ReefSignerStatus} from "@reef-defi/extension-inject/types";
+import {sendERC20Transfer, sendNativeREEFTransfer} from "./transferUtil";
 import {isMainnet} from "@reef-defi/evm-provider/utils";
-import {ReefSignerResponse, ReefSignerStatus, ReefInjected } from "@reef-defi/extension-inject/types";
 
 polyfill;
 
@@ -30,36 +31,44 @@ document.addEventListener('toggle-contract-value', async (evt:any) => {
     }
 });
 
-window.addEventListener('load', async () => {
-    try {
-        const extension = await getReefExtension('Minimal DApp Example') as ReefInjected;
-
-        // we can also get provider and signer
-        // const prov = await extension.reefProvider.getNetworkProvider();
-        // const signer = await extension.reefSigner.getSelectedSigner();
-        // console.log("provider=",await prov.api.genesisHash.toString(), ' signer=',signer);
-
-        extension.reefSigner.subscribeSelectedSigner(async (sig:ReefSignerResponse) => {
-            console.log("signer cb =",sig);
-            try {
-                if (sig.status===ReefSignerStatus.NO_ACCOUNT_SELECTED) {
-                    throw new Error('Create account in Reef extension or make selected account visible.');
-                }
-                if (sig.status===ReefSignerStatus.SELECTED_NO_VM_CONNECTION) {
-                    throw new Error('Connect/bind selected account to Reef EVM.');
-                }
-                if(sig.data) {
-                    console.log("signer connected to mainnet =", await isMainnet(sig.data));
-                }
-                setSelectedSigner(sig.data);
-            } catch (err) {
-                displayError(err);
-            }
-        });
-    } catch (e) {
-        displayError(e);
-    }
+document.addEventListener('send-erc20', async (evt:any) => {
+        sendERC20Transfer(evt.detail.amount, selectedSigner, evt.detail.to, evt.detail.contract).subscribe((val: any) => {
+            // TODO display transaction status in UI
+            console.log('TX =', val)
+        }, (err)=>console.log('TX ERC20 ERR=',err.message));
 });
+
+window.addEventListener('load',
+    async () => {
+        try {
+            const extension = await getReefExtension('Minimal DApp Example') as ReefInjected;
+
+            // we can also get provider and signer
+            // const prov = await extension.reefProvider.getNetworkProvider();
+            // const signer = await extension.reefSigner.getSelectedSigner();
+            // console.log("provider=",await prov.api.genesisHash.toString(), ' signer=',signer);
+
+            extension.reefSigner.subscribeSelectedSigner(async (sig:ReefSignerResponse) => {
+                console.log("signer cb =",sig);
+                try {
+                    if (sig.status===ReefSignerStatus.NO_ACCOUNT_SELECTED) {
+                        throw new Error('Create account in Reef extension or make selected account visible.');
+                    }
+                    if (sig.status===ReefSignerStatus.SELECTED_NO_VM_CONNECTION) {
+                        throw new Error('Connect/bind selected account to Reef EVM.');
+                    }
+                    if(sig.data) {
+                        console.log("signer connected to mainnet =", await isMainnet(sig.data));
+                    }
+                    setSelectedSigner(sig.data);
+                } catch (err) {
+                    displayError(err);
+                }
+            });
+        } catch (e) {
+            displayError(e);
+        }
+    });
 
 async function isSelectedAddress(addr: string, selectedSigner: Signer, message: string){
     const selAddr = await selectedSigner.getSubstrateAddress();

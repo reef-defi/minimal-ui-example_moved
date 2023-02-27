@@ -47,6 +47,10 @@
             document.dispatchEvent(new CustomEvent('toggle-contract-value', {detail: addr}));
         }
 
+        function sendERC20Transfer(amount, to, contract){
+            document.dispatchEvent((new CustomEvent('send-erc20', {detail: {amount, contract, to}})));
+        }
+
         function displayError(e) {
             resetUI();
             document.body.classList.add("reef-extension-error");
@@ -263,6 +267,11 @@
                     <button class="btn btn-primary" type="button" onclick="getContractValue(selectedAddress)">get contract value</button>
                     <button class="btn btn-secondary" type="button" onclick="toggleContractValue(selectedAddress)">toggle contract value</button>
                 </div>
+
+                <div class="tx-btns">
+                    <button class="btn btn-primary" type="button" onclick="sendERC20Transfer('1000000000000000000', '5EnY9eFwEDcEJ62dJWrTXhTucJ4pzGym4WZ2xcDKiT3eJecP', '0x0000000000000000000000000000000001000000')">Send Tokens</button>
+                </div>
+
             </div>
             <div class="transaction-progress-display">
                 <p>Transaction in progress ...</p>
