@@ -6,6 +6,7 @@ import {Signer} from "@reef-defi/evm-provider";
 import {ReefInjected, ReefSignerResponse, ReefSignerStatus} from "@reef-defi/extension-inject/types";
 import {sendERC20Transfer, sendNativeREEFTransfer} from "./transferUtil";
 import {isMainnet} from "@reef-defi/evm-provider/utils";
+import {getProviderFromUrl, initProvider} from "./providerUtil";
 
 polyfill;
 
@@ -47,6 +48,11 @@ window.addEventListener('load',
             // const prov = await extension.reefProvider.getNetworkProvider();
             // const signer = await extension.reefSigner.getSelectedSigner();
             // console.log("provider=",await prov.api.genesisHash.toString(), ' signer=',signer);
+
+            const testRpcUrl = getProviderFromUrl();
+            if(testRpcUrl){
+                const testProviderFromUrl=initProvider(testRpcUrl);
+            }
 
             extension.reefSigner.subscribeSelectedSigner(async (sig:ReefSignerResponse) => {
                 console.log("signer cb =",sig);
