@@ -4,7 +4,7 @@
   "main": "src/index.ts",
   "license": "MIT",
   "dependencies": {
-    "@reef-chain/util-lib": "^0.8.1",
+    "@reef-chain/util-lib": "^0.8.2",
     "@reef-defi/evm-provider": "^1.0.10",
     "@reef-defi/extension-dapp": "^1.0.19",
     "@reef-defi/extension-inject": "^1.0.19",
