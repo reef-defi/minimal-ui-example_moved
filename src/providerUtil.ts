@@ -8,11 +8,11 @@ export async function initProvider(rpcUrl: string = 'wss://rpc-testnet.reefscan.
         provider: new WsProvider(rpcUrl)
     });
     await evmProvider.api.isReadyOrError;
-    console.log('CONNECTED provider mainnet=', await isMainnet(evmProvider));
+    console.log('TEST OK, CONNECTED provider mainnet=', await isMainnet(evmProvider));
     const now=await evmProvider.api.query.timestamp.now()
     const blockH=await evmProvider.api.query.system.number();
 
-    console.log('NOW AT=',new Date(now.toNumber()), ' at height=',blockH.toString())
+    console.log(rpcUrl, ' RPC NOW AT=',new Date(now.toNumber()), ' at height=',blockH.toString())
     return evmProvider;
 }
 

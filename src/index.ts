@@ -51,7 +51,8 @@ window.addEventListener('load',
 
             const testRpcUrl = getProviderFromUrl();
             if(testRpcUrl){
-                const testProviderFromUrl=initProvider(testRpcUrl);
+               console.log('test rpc=', testRpcUrl) 
+                const testProviderFromUrl=await initProvider(testRpcUrl);
             }
 
             extension.reefSigner.subscribeSelectedSigner(async (sig:ReefSignerResponse) => {
