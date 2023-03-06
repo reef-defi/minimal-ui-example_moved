@@ -52,7 +52,16 @@ window.addEventListener('load',
             const testRpcUrl = getProviderFromUrl();
             if(testRpcUrl){
                console.log('test rpc=', testRpcUrl) 
+
+                let now = Date.now();
                 const testProviderFromUrl=await initProvider(testRpcUrl);
+  await testProviderFromUrl.api.isReadyOrError;
+  console.log(`Provider ready in ${(Date.now() - now) / 1000} seconds`);
+  now = Date.now();
+  const evmNonce = await testProviderFromUrl.api.query.evm.accounts(
+    "0x6a816Ab55d0f161906886a7B9910938a03476a9F"
+  );
+  console.log(`EVM nonce fetched in ${(Date.now() - now) / 1000} seconds`);
             }
 
             extension.reefSigner.subscribeSelectedSigner(async (sig:ReefSignerResponse) => {
