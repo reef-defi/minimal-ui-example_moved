@@ -1,6 +1,5 @@
 import {Provider} from "@reef-defi/evm-provider";
 import {WsProvider} from "@polkadot/rpc-provider";
-import {isMainnet} from "@reef-defi/evm-provider/utils";
 
 export async function initProvider(rpcUrl: string = 'wss://rpc-testnet.reefscan.info/ws') {
     console.log('connecting provider =',rpcUrl);
@@ -8,11 +7,7 @@ export async function initProvider(rpcUrl: string = 'wss://rpc-testnet.reefscan.
         provider: new WsProvider(rpcUrl)
     });
     await evmProvider.api.isReadyOrError;
-    console.log('TEST OK, CONNECTED provider mainnet=', await isMainnet(evmProvider));
-    const now=await evmProvider.api.query.timestamp.now()
-    const blockH=await evmProvider.api.query.system.number();
-
-    console.log(rpcUrl, ' RPC NOW AT=',new Date(now.toNumber()), ' at height=',blockH.toString())
+    console.log('provider connected');
     return evmProvider;
 }
 
