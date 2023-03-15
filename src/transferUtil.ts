@@ -31,15 +31,25 @@ export  function sendERC20Transfer (amount: string, fromSigner: Signer, toAddres
     return transactionUtils.reef20Transfer$(toAddress, fromSigner.provider, amount, tContract);
 }
 
-async function completeTransferExample(amount: string, fromAddr: string, toAddress: string, contractAddress: string): Promise<any>{
+export async function completeTransferExample(amount: string, toAddress: string, contractAddress: string): Promise<any>{
     const extensionsArr = await web3Enable('Test Transfer');
     const extension = extensionsArr.find(e=>e.name===REEF_EXTENSION_IDENT);
     const provider = await initProvider('wss://rpc.reefscan.info/ws');
+    const accs=await extension.accounts.get();
+    const fromAddr = accs[0].address;
     const signer = new Signer(provider, fromAddr, extension.signer);
     const tokenContract = new Contract(contractAddress, ERC20_TRANSFER_ABI, signer);
+    console.log('completeTransferExample from=', fromAddr, ' to=', toAddress, ' contract=', contractAddress);
+
     return tokenContract.transfer(toAddress, amount, {
         customData: {
             storageLimit: STORAGE_LIMIT
         }
+    }).then((tx)=>{
+        console.log('tx ', tx)
+        return tx.wait()
+    }).then((txRec)=>{
+        console.log('tx receipt', txRec)
+        return txRec;
     });
 }
