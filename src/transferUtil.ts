@@ -27,7 +27,8 @@ export async function completeTransferExample(amount: string, toAddress: string,
     const provider = await initProvider('wss://rpc.reefscan.info/ws');
 
     const accs = await reefExtension.accounts.get();
-    const fromAddr = accs[0].address;
+    // const fromAddr = accs[0].address;
+    const fromAddr='5EnY9eFwEDcEJ62dJWrTXhTucJ4pzGym4WZ2xcDKiT3eJecP'
     console.log('took first account in wallet')
     const signer = new Signer(provider, fromAddr, reefExtension.signer);
 
