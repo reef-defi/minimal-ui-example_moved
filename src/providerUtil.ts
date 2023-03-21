@@ -1,14 +1,15 @@
-import {Provider} from "@reef-defi/evm-provider";
-import {WsProvider} from "@polkadot/rpc-provider";
+import {WsProvider} from "@polkadot/api";
+import {ApiPromise} from "@polkadot/api"
+import {options} from "@reef-defi/api"
 
 export async function initProvider(rpcUrl: string = 'wss://rpc-testnet.reefscan.info/ws') {
     console.log('connecting provider =',rpcUrl);
-    const evmProvider = new Provider({
-        provider: new WsProvider(rpcUrl)
-    });
-    await evmProvider.api.isReadyOrError;
+    const provider= new WsProvider(rpcUrl)
+
+    const api = await ApiPromise.create(options());
+    await api.isReadyOrError;
     console.log('provider connected');
-    return evmProvider;
+    return api;
 }
 
 export function getProviderFromUrl(): string|null {
