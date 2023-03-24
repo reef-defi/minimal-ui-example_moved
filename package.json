@@ -4,7 +4,9 @@
   "main": "src/index.ts",
   "license": "MIT",
   "dependencies": {
-    "@polkadot/api": "6.9.3-6",
+    "@polkadot/api": "9.14.2",
+    "@reef-defi/api": "^1.1.0",
+    "@reef-defi/type-definitions": "^1.1.0",
     "crypto-js": "^4.1.1",
     "esbuild": "^0.17.12",
     "ethers": "^5.6.9",
@@ -22,6 +24,6 @@
     "crypto": false
   },
   "resolutions": {
-    "@polkadot/api": "6.9.3-6"
+    "@polkadot/api": "9.14.2"
   }
 }
