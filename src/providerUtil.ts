@@ -1,6 +1,5 @@
 import {WsProvider} from "@polkadot/api";
 import {ApiPromise} from "@polkadot/api"
-import {options} from "@reef-defi/api"
 import {types} from "@reef-defi/type-definitions";
 
 export async function initProvider(rpcUrl: string = 'wss://rpc-testnet.reefscan.info/ws') {
