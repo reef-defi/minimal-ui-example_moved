@@ -1,3 +1,4 @@
+/*
 import {Signer as EthersSigner} from "@ethersproject/abstract-signer";
 import {ethers} from "ethers";
 import {Signer as EvmSigner} from "@reef-defi/evm-provider/Signer";
@@ -53,3 +54,4 @@ export async function getFlipperValue(signer: EvmSigner) {
     const flipperContract = getFlipperContract(signer);
     return await flipperContract.get();
 }
+*/

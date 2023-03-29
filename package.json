@@ -4,6 +4,7 @@
   "main": "src/index.ts",
   "license": "MIT",
   "dependencies": {
+    "@reef-defi/evm-provider": "file:.yalc/@reef-defi/evm-provider",
     "@polkadot/api": "9.14.2",
     "@reef-defi/type-definitions": "^1.1.0",
     "esbuild": "^0.17.12",
@@ -18,8 +19,5 @@
   },
   "browser": {
     "crypto": false
-  },
-  "resolutions": {
-    "@polkadot/api": "9.14.2"
   }
 }

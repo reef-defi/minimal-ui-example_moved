@@ -1,28 +1,28 @@
 import polyfill from './polyfill';
 import {initProvider} from "./providerUtil";
 import {BigNumber} from "ethers";
+import {completeTransferExample1} from "./transferUtil";
 
 polyfill;
 
 window.addEventListener('load',
     async () => {
         try {
-            // await completeTransferExample('1000000000000000000', '0xeB33ef5Cd460F79C335bbcdcFC5f1a2EaDd6C6c5', tokenUtil.REEF_ADDRESS)
-            const api = await initProvider('wss://rpc-testnet.reefscan.info/ws');
-            console.log('GEN=',api.genesisHash.toString());
+            await completeTransferExample1('1000000000000000000', '0xeB33ef5Cd460F79C335bbcdcFC5f1a2EaDd6C6c5', '0x0000000000000000000000000000000001000000')
+            /* const provider =await initProvider('wss://rpc-testnet.reefscan.com/ws');
+            console.log('GEN=',provider.api.genesisHash.toString());
             let accAddr = '5FnTGxAVA7bP6wAd39BNBRomg5tooLZ7ZEfJZjPp8dgM7puP';
             const toAddress='5GsucwmqZtAZfBaXPV77qcCAL1ekaAfHLekbn41gKv1qfjnH';
             // const toAddress='5G9f52Dx7bPPYqekh1beQsuvJkhePctWcZvPDDuhWSpDrojN';
             const decimals = 10e18;
-            const unsub = api.query.system.account(accAddr, ({ nonce, data: balance }) => {
+            const unsub = provider.api.query.system.account(accAddr, ({ nonce, data: balance }) => {
 
-                console.log('acc=',accAddr,'balance=',balance.free.toString());
+                console.log('acc=',accAddr,'balance=',balance.free?.toString());
             });
-            const unsub1 = api.query.system.account(toAddress, ({ nonce, data: balance }) => {
-                console.log('acc1=',toAddress,'balance=',BigNumber.from(balance.free.toString()));
-            });
+            const unsub1 = provider.api.query.system.account(toAddress, ({ nonce, data: balance }) => {
+                console.log('acc1=',toAddress,'balance=',BigNumber.from(balance.free?.toString()));
+            });*/
             //5G9f52Dx7bPPYqekh1beQsuvJkhePctWcZvPDDuhWSpDrojN
-
 
 
 

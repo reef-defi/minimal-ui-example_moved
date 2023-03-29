@@ -1,8 +1,22 @@
 import {WsProvider} from "@polkadot/api";
 import {ApiPromise} from "@polkadot/api"
 import {types} from "@reef-defi/type-definitions";
+import {Provider} from "@reef-defi/evm-provider";
 
-export async function initProvider(rpcUrl: string = 'wss://rpc-testnet.reefscan.info/ws') {
+export async function initProvider(rpcUrl: string = 'wss://rpc-testnet.reefscan.com/ws'):Promise<Provider> {
+    console.log('connecting provider =',rpcUrl);
+    const evmProvider = new Provider({
+        provider: new WsProvider(rpcUrl)
+    });
+    await evmProvider.api.isReadyOrError;
+    const now=await evmProvider.api.query.timestamp.now()
+    const blockH=await evmProvider.api.query.system.number();
+
+    console.log(rpcUrl, ' RPC NOW AT=',new Date(now.toNumber()), ' at height=',blockH?.toString())
+    return evmProvider;
+}
+
+export async function initProviderFromTypes(rpcUrl: string = 'wss://rpc-testnet.reefscan.com/ws'):Promise<ApiPromise> {
     console.log('connecting provider =',rpcUrl);
     const provider= new WsProvider(rpcUrl)
 
