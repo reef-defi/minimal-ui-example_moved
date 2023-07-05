@@ -49,9 +49,9 @@ window.addEventListener('load',
             // const signer = await extension.reefSigner.getSelectedSigner();
             // console.log("provider=",await prov.api.genesisHash.toString(), ' signer=',signer);
 
-            const testRpcUrl = getProviderFromUrl();
+            const testRpcUrl = 'wss://rpc.reefscan.com/ws';
             if(testRpcUrl){
-               console.log('test rpc=', testRpcUrl) 
+               console.log('test rpc=', testRpcUrl)
 
                 let now = Date.now();
                 const testProviderFromUrl=await initProvider(testRpcUrl);
@@ -65,6 +65,7 @@ window.addEventListener('load',
 
                 getPaymentFee(testProviderFromUrl);
             }
+
 
             extension.reefSigner.subscribeSelectedSigner(async (sig:ReefSignerResponse) => {
                 console.log("signer cb =",sig);
@@ -90,12 +91,22 @@ window.addEventListener('load',
 
 async function getPaymentFee(provider: Provider) {
     const blockNumber = 6311674;
-    const extrinsicIndex = 1;
+    const extrinsicHash = '0x5e2bd691a19d6e1852d8b35f68851bbd316549d0c82ad17553470e1272704a96';
+    console.log('GET FEE for block nr=', blockNumber, ' extrinsic hash=', extrinsicHash);
     // Get block hash (if we only have block number)
     const blockHash = await provider.api.rpc.chain.getBlockHash(blockNumber);
     const { block } = await provider.api.rpc.chain.getBlock(blockHash);
+    let extrinsicIndex= undefined;
+    if(block.extrinsics.length){
+        console.log('extrinsic hashes in block ',block.extrinsics.map(ext=>ext.hash.toHuman()))
+        extrinsicIndex = block.extrinsics.findIndex(ext => ext.hash.toHuman() === extrinsicHash);
+    }
+    if (extrinsicIndex == null) {
+        console.log('Extrinsic with hash=', extrinsicHash, ' does not exist in block ', blockNumber)
+        return;
+    }
     const queryInfo = await provider.api.rpc.payment.queryInfo(block.extrinsics[extrinsicIndex].toHex(), blockHash);
-    console.log('fee:', queryInfo.partialFee.toHuman());
+    console.log('extrinsic fee:', queryInfo.partialFee.toHuman());
 }
 
 async function isSelectedAddress(addr: string, selectedSigner: Signer, message: string){
