@@ -2,7 +2,7 @@ import polyfill from './polyfill';
 import {flipIt, getFlipperValue} from "./flipperContract";
 import {subscribeToBalance, toREEFBalanceNormal} from "./signerUtil";
 import {getReefExtension} from "./extensionUtil";
-import {Signer} from "@reef-defi/evm-provider";
+import {Provider, Signer} from "@reef-defi/evm-provider";
 import {ReefInjected, ReefSignerResponse, ReefSignerStatus} from "@reef-defi/extension-inject/types";
 import {sendERC20Transfer, sendNativeREEFTransfer} from "./transferUtil";
 import {isMainnet} from "@reef-defi/evm-provider/utils";
@@ -55,13 +55,15 @@ window.addEventListener('load',
 
                 let now = Date.now();
                 const testProviderFromUrl=await initProvider(testRpcUrl);
-  await testProviderFromUrl.api.isReadyOrError;
-  console.log(`Provider ready in ${(Date.now() - now) / 1000} seconds`);
-  now = Date.now();
-  const evmNonce = await testProviderFromUrl.api.query.evm.accounts(
-    "0x6a816Ab55d0f161906886a7B9910938a03476a9F"
-  );
-  console.log(`EVM nonce fetched in ${(Date.now() - now) / 1000} seconds`);
+                await testProviderFromUrl.api.isReadyOrError;
+                console.log(`Provider ready in ${(Date.now() - now) / 1000} seconds`);
+                now = Date.now();
+                const evmNonce = await testProviderFromUrl.api.query.evm.accounts(
+                    "0x6a816Ab55d0f161906886a7B9910938a03476a9F"
+                );
+                console.log(`EVM nonce fetched in ${(Date.now() - now) / 1000} seconds`);
+
+                getPaymentFee(testProviderFromUrl);
             }
 
             extension.reefSigner.subscribeSelectedSigner(async (sig:ReefSignerResponse) => {
@@ -85,6 +87,16 @@ window.addEventListener('load',
             displayError(e);
         }
     });
+
+async function getPaymentFee(provider: Provider) {
+    const blockNumber = 6311674;
+    const extrinsicIndex = 1;
+    // Get block hash (if we only have block number)
+    const blockHash = await provider.api.rpc.chain.getBlockHash(blockNumber);
+    const { block } = await provider.api.rpc.chain.getBlock(blockHash);
+    const queryInfo = await provider.api.rpc.payment.queryInfo(block.extrinsics[extrinsicIndex].toHex(), blockHash);
+    console.log('fee:', queryInfo.partialFee.toHuman());
+}
 
 async function isSelectedAddress(addr: string, selectedSigner: Signer, message: string){
     const selAddr = await selectedSigner.getSubstrateAddress();
