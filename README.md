@@ -1,5 +1,7 @@
 <img src="https://i.imgur.com/DTv57Sk.png" width="120" alt="Reef" align="right">
 
+# Moved to https://github.com/reef-chain/minimal-ui-example
+
 # Reef Minimal Ui Example
 
 Very basic example to interact with Reef Chain and to trigger Reef Browser Extension.
